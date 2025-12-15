@@ -60,7 +60,14 @@ import { PostNavigationComponent } from '../../components/post-navigation.compon
           <ul class="recent-posts-list">
             @for (p of recentPosts; track p.attributes.slug) {
             @if (p.attributes.slug !== currentSlug) {
-            <li>
+            <li class="recent-post-item">
+              @if (p.attributes.coverImage || defaultCoverImage) {
+              <img 
+                class="recent-post-thumbnail" 
+                [src]="p.attributes.coverImage || defaultCoverImage"
+                [alt]="p.attributes.title"
+              />
+              }
               <a [routerLink]="['/blog', p.attributes.slug]">
                 {{ p.attributes.title }}
               </a>
@@ -180,8 +187,19 @@ import { PostNavigationComponent } from '../../components/post-navigation.compon
       margin: 0;
     }
 
-    .recent-posts-list li {
-      margin-bottom: 0.75rem;
+    .recent-post-item {
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .recent-post-thumbnail {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 6px;
+      flex-shrink: 0;
     }
 
     .recent-posts-list a {
@@ -191,6 +209,7 @@ import { PostNavigationComponent } from '../../components/post-navigation.compon
       font-size: 0.95rem;
       line-height: 1.4;
       display: block;
+      flex: 1;
     }
 
     .recent-posts-list a:hover {
@@ -338,6 +357,8 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
         this.disclaimerText = post.attributes.disclaimerText || this.disclaimerText;
         this.updateNavigation();
         this.recentPosts = this.allPosts.slice(0, 5);
+        // Reset TOC state when navigating to a new post
+        this.headings = [];
         this.hasExtractedHeadings = false;
       }
     });
