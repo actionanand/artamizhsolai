@@ -14,7 +14,7 @@
     "watch": "vite build --watch",
     "test": "vitest",
     "preview": "node dist/analog/server/index.mjs",
-    "copy-error-page": "cp dist/client/index.html dist/client/404.html"
+    "copy-error-page": "cp dist/analog/public/index.html dist/analog/public/404.html"
   },
   "private": true,
   "dependencies": {
