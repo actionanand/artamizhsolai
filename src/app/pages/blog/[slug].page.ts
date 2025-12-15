@@ -31,7 +31,7 @@ import { PostNavigationComponent } from '../../components/post-navigation.compon
 
       <img 
         class="blog-post__image" 
-        [src]="post.attributes.coverImage"
+        [src]="post.attributes.coverImage || defaultCoverImage"
         [alt]="post.attributes.title"
       />
 
@@ -307,6 +307,7 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
 
   readonly post$ = injectContent<PostAttributes>('slug');
   readonly allPosts = injectContentFiles<PostAttributes>();
+  readonly defaultCoverImage = '/tamil-literature-default.svg';
 
   headings: HeadingLink[] = [];
   recentPosts: any[] = [];
