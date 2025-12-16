@@ -208,6 +208,15 @@ button:focus-visible {
   font-weight: 600;
   margin: 0 0 0.75rem 0;
   font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admonition__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .admonition__content {
@@ -310,16 +319,34 @@ button:focus-visible {
   font-weight: 600;
   font-size: 1.05rem;
   color: #3d3d9f;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admonition--collapse summary::-webkit-details-marker {
+  display: none;
+}
+
+.admonition--collapse summary::marker {
+  display: none;
+}
+
+.admonition--collapse summary::before {
+  content: '▼';
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+}
+
+.admonition--collapse[open] summary::before {
+  transform: rotate(0deg);
+  content: '▲';
 }
 
 .admonition--collapse summary:hover {
   opacity: 0.8;
-}
-
-.admonition--collapse[open] .admonition__title::before {
-  content: '▲ ';
-}
-
-.admonition--collapse:not([open]) .admonition__title::before {
-  content: '▼ ';
 }

@@ -22,6 +22,10 @@ Second paragraph with more details.
 This is a helpful tip for readers.
 :::
 
+:::warning
+This is an important warning message.
+:::
+
 :::warning[Important]
 This is an important warning message.
 :::
@@ -30,8 +34,31 @@ This is an important warning message.
 This content is hidden by default and can be clicked to show/hide.
 :::
 
+:::success 
+This is an important warning message.
+:::
+
+:::note 
+This is an important warning message.
+:::
+
+:::info 
+This is an important warning message.
+:::
+
 :::collapse
 This content is hidden by default and can be clicked to show/hide. without custom title
 :::
+
+> test quote
+>
+
+1. test it
+   1. prepare
+   2. execute it
+
+- Will you do?
+  - No
+  * Yes
 
 ## This is test
