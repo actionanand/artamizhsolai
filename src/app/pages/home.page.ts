@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { injectContentFiles } from '@analogjs/content';
+import { paginationConfig } from '../config/pagination-config';
 import PostAttributes from '../post-attributes';
 
 const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
@@ -206,6 +207,6 @@ export default class HomePage implements OnInit {
   recentPosts: typeof this.posts = [];
 
   ngOnInit() {
-    this.recentPosts = this.posts.slice(0, 3);
+    this.recentPosts = this.posts.slice(0, paginationConfig.homeRecentPostsCount);
   }
 }

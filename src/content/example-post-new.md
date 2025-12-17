@@ -4,6 +4,8 @@ slug: my-first-post-test
 description: My First Post Description
 date: December 12, 2022
 toc: false
+category: "Technology"
+tags: ["angular", "typescript", "web-development"]
 ---
 
 # Example Blog Post
@@ -49,6 +51,7 @@ This is an important warning message.
 :::collapse
 This content is hidden by default and can be clicked to show/hide. without custom title
 :::
+
 
 > test quote
 >
