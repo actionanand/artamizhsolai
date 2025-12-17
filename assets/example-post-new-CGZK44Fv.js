@@ -1,9 +1,11 @@
-const i=`---
+const n=`---
 title: My First Post Test
 slug: my-first-post-test
 description: My First Post Description
 date: December 12, 2022
 toc: false
+category: "Technology"
+tags: ["angular", "typescript", "web-development"]
 ---
 
 <h1 id="example-blog-post">Example Blog Post</h1>
@@ -44,4 +46,4 @@ This content is hidden by default and can be clicked to show/hide. without custo
 </li>
 </ul>
 <h2 id="this-is-test">This is test</h2>
-`;export{i as default};
+`;export{n as default};
