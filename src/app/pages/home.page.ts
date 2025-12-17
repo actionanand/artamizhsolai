@@ -12,7 +12,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
   imports: [RouterLink],
   template: `
     <section class="hero">
-      <h1 class="hero__title">Welcome to தமிழ் சோலை</h1>
+      <h1 class="hero__title">Welcome to AR தமிழ் சோலை</h1>
       <p class="hero__subtitle">Explore articles, stories, and insights</p>
       <a routerLink="/blog" class="hero__cta">Read Blog</a>
     </section>

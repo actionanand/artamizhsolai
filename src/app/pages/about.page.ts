@@ -26,7 +26,7 @@ import { CommonModule } from '@angular/common';
         <section class="about-section">
           <h2>About This Blog</h2>
           <p>
-            AR Tamizh Solai (அர் தமிழ் சொலை) is built with a passion for Tamil language and literature. 
+            AR Tamizh Solai (AR தமிழ் சோலை) is built with a passion for Tamil language and literature. 
             Here, you'll find:
           </p>
           <ul class="features-list">
