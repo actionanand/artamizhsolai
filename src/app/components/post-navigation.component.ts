@@ -47,18 +47,22 @@ import PostAttributes from '../post-attributes';
     .post-nav__link {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.75rem;
       padding: 1.5rem;
-      border: 2px solid #dee2e6;
+      background: linear-gradient(135deg, #f0f5ff 0%, #ffffff 100%);
+      border: 1px solid #dee2e6;
       border-radius: 8px;
       text-decoration: none;
       color: inherit;
       transition: all 0.3s ease;
+      cursor: pointer;
     }
 
     .post-nav__link:hover {
       border-color: #0d6efd;
-      background-color: #f8f9fa;
+      background: linear-gradient(135deg, #e7f0ff 0%, #f0f5ff 100%);
+      box-shadow: 0 6px 16px rgba(13, 110, 253, 0.2);
+      transform: translateY(-2px);
     }
 
     .post-nav__link--prev {
@@ -70,15 +74,18 @@ import PostAttributes from '../post-attributes';
     }
 
     .post-nav__label {
-      font-size: 0.875rem;
+      font-size: 0.8rem;
       color: #6c757d;
-      font-weight: 500;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .post-nav__title {
-      font-weight: 600;
+      font-weight: 700;
       color: #0d6efd;
       line-height: 1.4;
+      font-size: 1.1rem;
     }
 
     .post-nav__placeholder {

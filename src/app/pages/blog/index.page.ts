@@ -420,24 +420,28 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
     }
 
     .page-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       border: 1px solid #0d6efd;
-      background: #0d6efd;
+      background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
       color: white;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
     }
 
     .page-btn:hover:not(:disabled) {
-      background: #0b5ed7;
-      border-color: #0b5ed7;
+      background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
+      border-color: #0a58ca;
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+      transform: translateY(-1px);
     }
 
     .page-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
     }
 
     .page-info {
