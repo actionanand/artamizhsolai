@@ -3,6 +3,7 @@ import { isPlatformBrowser, AsyncPipe, CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { injectContent, injectContentFiles, MarkdownComponent } from '@analogjs/content';
+import { paginationConfig } from '../../config/pagination-config';
 
 import PostAttributes from '../../post-attributes';
 import { extractHeadings, HeadingLink } from '../../utilities/markdown-utils';
@@ -29,6 +30,14 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
         @if (post.attributes.date) {
         <p class="blog-post__date">{{ post.attributes.date }}</p>
         }
+        <div class="blog-post__meta">
+          <span class="post-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
+          @if (post.attributes.tags && post.attributes.tags.length > 0) {
+          @for (tag of post.attributes.tags; track tag) {
+          <span class="post-meta-tag tag-tag">{{ tag }}</span>
+          }
+          }
+        </div>
         <p class="blog-post__description">{{ post.attributes.description }}</p>
       </header>
 
@@ -117,6 +126,33 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
       color: #495057;
       margin: 0;
       line-height: 1.6;
+    }
+
+    .blog-post__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.75rem 0;
+    }
+
+    .post-meta-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .category-tag {
+      background: #e3f2fd;
+      color: #1976d2;
+      border: 1px solid #1976d2;
+    }
+
+    .tag-tag {
+      background: #f3e5f5;
+      color: #7b1fa2;
+      border: 1px solid #7b1fa2;
     }
 
     .blog-post__image {
@@ -359,7 +395,7 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
         this.showDisclaimer = post.attributes.disclaimerEnabled !== false; // default true
         this.disclaimerText = post.attributes.disclaimerText || this.disclaimerText;
         this.updateNavigation();
-        this.recentPosts = this.allPosts.slice(0, 5);
+        this.recentPosts = this.allPosts.slice(0, paginationConfig.articleRecentPostsCount);
         // Reset TOC state when navigating to a new post
         this.headings = [];
         this.hasExtractedHeadings = false;

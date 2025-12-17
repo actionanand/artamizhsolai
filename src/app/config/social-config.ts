@@ -52,13 +52,13 @@ export const socialIcons: SocialIcon[] = [
     name: 'WhatsApp',
     url: 'https://wa.me/911234567890',
     icon: 'whatsapp',
-    enabled: true
+    enabled: false
   },
   {
     name: 'WhatsApp Business',
     url: 'https://wa.me/919876543210',
     icon: 'whatsapp-business',
-    enabled: true
+    enabled: false
   },
   {
     name: 'Spotify',
@@ -76,54 +76,60 @@ export const socialIcons: SocialIcon[] = [
     name: 'RSS',
     url: '/rss.xml',
     icon: 'rss',
-    enabled: true
+    enabled: false
   },
   {
     name: 'Snapchat',
     url: 'https://snapchat.com/add/actionanand',
     icon: 'snapchat',
-    enabled: true
+    enabled: false
   },
   {
     name: 'Pinterest',
     url: 'https://pinterest.com/your-username',
     icon: 'pinterest',
-    enabled: true
+    enabled: false
   },
   {
     name: 'Website',
     url: 'https://your-website.com',
     icon: 'website',
-    enabled: true
+    enabled: false
   },
   {
     name: 'Telegram',
     url: 'https://t.me/your-username',
     icon: 'telegram',
-    enabled: true
+    enabled: false
   },
   {
     name: 'Email',
     url: 'mailto:your-email@example.com',
     icon: 'email',
-    enabled: true
+    enabled: false
   },
   {
     name: 'WeChat',
     url: 'weixin://dl/chat?your-id',
     icon: 'wechat',
-    enabled: true
+    enabled: false
   },
   {
     name: 'Reddit',
     url: 'https://reddit.com/user/your-username',
     icon: 'reddit',
-    enabled: true
+    enabled: false
   },
   {
     name: 'Discord',
     url: 'https://discord.gg/your-invite-code',
     icon: 'discord',
+    enabled: false
+  },
+  {
+    name: 'Stack Overflow',
+    url: 'https://stackoverflow.com/users/10907720/anand-raja',
+    icon: 'stackoverflow',
     enabled: true
   }
 ];

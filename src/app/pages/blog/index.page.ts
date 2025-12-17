@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { injectContentFiles } from '@analogjs/content';
+import { paginationConfig } from '../../config/pagination-config';
 
 import PostAttributes from '../../post-attributes';
 
@@ -115,9 +116,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
             <p class="post-preview__date">{{ post.attributes.date }}</p>
             }
             <div class="post-preview__meta">
-              @if (post.attributes.category) {
-              <span class="post-meta-tag category-tag">{{ post.attributes.category }}</span>
-              }
+              <span class="post-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
               @if (post.attributes.tags && post.attributes.tags.length > 0) {
               @for (tag of post.attributes.tags; track tag) {
               <span class="post-meta-tag tag-tag">{{ tag }}</span>
@@ -137,7 +136,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
         }
       </div>
 
-      @if (totalPages > 1) {
+      @if (filteredPosts.length > 0) {
       <nav class="pagination">
         <button 
           class="page-btn" 
@@ -422,10 +421,18 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
 
     .page-btn {
       padding: 0.5rem 1rem;
-      border: 1px solid #dee2e6;
-      background: #fff;
+      border: 1px solid #0d6efd;
+      background: #0d6efd;
+      color: white;
       border-radius: 6px;
       cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s ease;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      background: #0b5ed7;
+      border-color: #0b5ed7;
     }
 
     .page-btn:disabled {
@@ -472,7 +479,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
 })
 export default class Blog implements OnInit {
   readonly posts = injectContentFiles<PostAttributes>();
-  readonly pageSize = 15;
+  readonly pageSize = paginationConfig.blogPageSize;
   readonly defaultCoverImage = DEFAULT_COVER_IMAGE;
 
   availableCategories: string[] = [];
@@ -496,9 +503,7 @@ export default class Blog implements OnInit {
   private extractCategories() {
     const categories = new Set<string>();
     this.posts.forEach(post => {
-      if (post.attributes.category) {
-        categories.add(post.attributes.category);
-      }
+      categories.add(post.attributes.category || 'uncategorized');
     });
     this.availableCategories = Array.from(categories).sort();
   }
@@ -524,8 +529,9 @@ export default class Blog implements OnInit {
 
   private applyFilters() {
     this.filteredPosts = this.posts.filter(post => {
+      const postCategory = post.attributes.category || 'uncategorized';
       const matchesCategory = !this.selectedCategory || 
-        post.attributes.category === this.selectedCategory;
+        postCategory === this.selectedCategory;
       
       const matchesTags = this.selectedTags.length === 0 || 
         (post.attributes.tags && 
@@ -588,6 +594,9 @@ export default class Blog implements OnInit {
   }
 
   getPostsCountByCategory(category: string): number {
+    if (category === 'uncategorized') {
+      return this.posts.filter(p => !p.attributes.category).length;
+    }
     return this.posts.filter(p => p.attributes.category === category).length;
   }
 

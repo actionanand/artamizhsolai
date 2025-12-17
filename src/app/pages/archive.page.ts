@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { injectContentFiles } from '@analogjs/content';
+import { paginationConfig } from '../config/pagination-config';
 import PostAttributes from '../post-attributes';
 
 @Component({
@@ -83,9 +84,7 @@ import PostAttributes from '../post-attributes';
               <span class="archive-year__date">— {{ post.attributes.date }}</span>
               }
               <div class="archive-year__meta">
-                @if (post.attributes.category) {
-                <span class="archive-meta-tag category-tag">{{ post.attributes.category }}</span>
-                }
+                <span class="archive-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
                 @if (post.attributes.tags && post.attributes.tags.length > 0) {
                 @for (tag of post.attributes.tags; track tag) {
                 <span class="archive-meta-tag tag-tag">{{ tag }}</span>
@@ -309,7 +308,7 @@ export default class YearArchivePage {
   availableTags: string[] = [];
   selectedCategory: string | null = null;
   selectedTags: string[] = [];
-  readonly maxPerYear = 25;
+  readonly maxPerYear = paginationConfig.archivePageSize;
 
   constructor(private route: ActivatedRoute) {
     this.groupByYear();
@@ -337,9 +336,7 @@ export default class YearArchivePage {
   private extractCategories() {
     const categories = new Set<string>();
     this.posts.forEach(post => {
-      if (post.attributes.category) {
-        categories.add(post.attributes.category);
-      }
+      categories.add(post.attributes.category || 'uncategorized');
     });
     this.availableCategories = Array.from(categories).sort();
   }
@@ -364,8 +361,9 @@ export default class YearArchivePage {
 
   private applyFilters() {
     const filteredPosts = this.posts.filter(post => {
+      const postCategory = post.attributes.category || 'uncategorized';
       const matchesCategory = !this.selectedCategory || 
-        post.attributes.category === this.selectedCategory;
+        postCategory === this.selectedCategory;
       
       const matchesTags = this.selectedTags.length === 0 || 
         (post.attributes.tags && 
@@ -428,6 +426,9 @@ export default class YearArchivePage {
   }
 
   getPostsCountByCategory(category: string): number {
+    if (category === 'uncategorized') {
+      return this.posts.filter(p => !p.attributes.category).length;
+    }
     return this.posts.filter(p => p.attributes.category === category).length;
   }
 
