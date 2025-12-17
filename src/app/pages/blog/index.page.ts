@@ -56,14 +56,16 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
             >
               All
             </button>
-            @for (tag of availableTags; track tag) {
-            <button 
-              class="filter-tag"
-              [class.active]="selectedTags.includes(tag)"
-              (click)="toggleTag(tag)"
-            >
-              {{ tag }} ({{ getPostsCountByTag(tag) }})
-            </button>
+            @for (tag of getFilteredTags(); track tag) {
+              @if (getPostsCountByTag(tag) > 0) {
+              <button 
+                class="filter-tag"
+                [class.active]="selectedTags.includes(tag)"
+                (click)="toggleTag(tag)"
+              >
+                {{ tag }} ({{ getPostsCountByTag(tag) }})
+              </button>
+              }
             }
           </div>
         </div>
@@ -604,9 +606,36 @@ export default class Blog implements OnInit {
     return this.posts.filter(p => p.attributes.category === category).length;
   }
 
+  getFilteredTags(): string[] {
+    if (!this.selectedCategory) {
+      // Show all tags when no category selected
+      return this.availableTags;
+    }
+
+    // Filter tags to show only those with posts in selected category
+    const validTags = new Set<string>();
+    this.posts.forEach(post => {
+      const postCategory = post.attributes.category || 'uncategorized';
+      if (postCategory === this.selectedCategory && post.attributes.tags) {
+        post.attributes.tags.forEach(tag => validTags.add(tag));
+      }
+    });
+    return Array.from(validTags).sort();
+  }
+
   getPostsCountByTag(tag: string): number {
-    return this.posts.filter(p => 
-      p.attributes.tags && p.attributes.tags.includes(tag)
-    ).length;
+    if (!this.selectedCategory) {
+      // Count all posts with this tag
+      return this.posts.filter(p => 
+        p.attributes.tags && p.attributes.tags.includes(tag)
+      ).length;
+    }
+
+    // Count posts with this tag in selected category
+    return this.posts.filter(p => {
+      const postCategory = p.attributes.category || 'uncategorized';
+      return postCategory === this.selectedCategory &&
+        p.attributes.tags && p.attributes.tags.includes(tag);
+    }).length;
   }
 }
