@@ -10,6 +10,7 @@ import { extractHeadings, HeadingLink } from '../../utilities/markdown-utils';
 import { TableOfContentsComponent } from '../../components/table-of-contents.component';
 import { PostNavigationComponent } from '../../components/post-navigation.component';
 import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
+import { ProcessFootnotesPipe } from '../../pipes/process-footnotes.pipe';
 
 @Component({
   selector: 'app-blog-post',
@@ -21,6 +22,7 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
     TableOfContentsComponent,
     PostNavigationComponent,
     AdmonitionTransformPipe,
+    ProcessFootnotesPipe,
   ],
   template: `
     @if (post$ | async; as post) {
@@ -86,7 +88,9 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
         }
 
         <div class="blog-post__content" #contentRef>
-          <analog-markdown [content]="post.content | admonitionTransform" />
+          @if (post.content) {
+          <analog-markdown [content]="(typeof post.content === 'string' ? post.content : '') | processFootnotes | admonitionTransform" />
+          }
         </div>
       </div>
 
@@ -612,6 +616,7 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
     this.updateContentHeadings();
     if (this.isBrowser) {
       this.initObserver();
+      this.setupFootnoteNavigation();
     }
   }
 
@@ -671,11 +676,46 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
     if (this.mutationObserver) return;
     this.mutationObserver = new MutationObserver(() => {
       this.updateContentHeadings();
+      this.setupFootnoteNavigation();
     });
     this.mutationObserver.observe(this.contentRef.nativeElement, {
       childList: true,
       subtree: true,
       characterData: true,
+    });
+  }
+
+  private setupFootnoteNavigation() {
+    if (!this.isBrowser) return;
+
+    // Use document to find footnote links since they're rendered inside analog-markdown
+    const article = document.querySelector('article.blog-post');
+    if (!article) return;
+
+    const handleFootnoteClick = (e: Event) => {
+      const link = (e.target as HTMLElement);
+      const dataFn = link.getAttribute('data-fn');
+      if (dataFn) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const targetId = dataFn;
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Update URL with full path including blog slug
+          const fullUrl = `/blog/${this.currentSlug}#${targetId}`;
+          window.history.replaceState(null, '', fullUrl);
+        }
+      }
+    };
+
+    // Use event delegation - attach single listener to article
+    article.addEventListener('click', (e: Event) => {
+      const target = (e.target as HTMLElement);
+      if (target.classList.contains('footnote-ref') || target.classList.contains('footnote-backref')) {
+        handleFootnoteClick(e);
+      }
     });
   }
 

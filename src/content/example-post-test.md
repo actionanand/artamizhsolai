@@ -11,4 +11,11 @@ isDraft: true
 
 This is an example blog post written in markdown!
 
+The Silappatikaram[^epic] is one of the Five Great Epics[^five].
+
+:::footnotes
+[^epic]: Also known as "The Tale of the Anklet", written by Ilango Adigal
+[^five]: The Five Great Epics include Silappatikaram, Manimekalai, and others
+:::
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

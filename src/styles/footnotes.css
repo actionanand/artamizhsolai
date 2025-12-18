@@ -1,0 +1,116 @@
+/* Footnotes styling - box block like disclaimer */
+
+.blog-post__footnotes {
+  background: linear-gradient(135deg, #f9fafb 0%, #fcfdfe 100%);
+  border: 1px solid #e5e7eb;
+  border-left: 3px solid #9ca3af;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.footnotes-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.footnotes-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.footnotes-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.blog-post__footnotes ol {
+  padding-left: 1.5rem;
+  list-style-type: decimal;
+  margin: 0;
+}
+
+.blog-post__footnotes li {
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+  color: #495057;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+}
+
+.blog-post__footnotes li:last-child {
+  margin-bottom: 0;
+}
+
+.blog-post__footnotes li p {
+  margin: 0;
+  display: inline;
+}
+
+/* External links in footnotes */
+.blog-post__footnotes li p a:not(.footnote-backref) {
+  color: #6b7280;
+  text-decoration: none;
+  border-bottom: 1px solid #d1d5db;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.blog-post__footnotes li p a:not(.footnote-backref):hover {
+  color: #374151;
+  border-bottom-color: #9ca3af;
+}
+
+/* Superscript reference links in content */
+.footnote-ref {
+  display: inline-block;
+  vertical-align: super;
+  font-size: 0.75em;
+  color: #6b7280;
+  text-decoration: none;
+  padding: 0 0.15rem;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.footnote-ref:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+/* Back-reference arrow */
+.footnote-backref {
+  margin-left: 0.5rem;
+  font-size: 0.85em;
+  color: #9ca3af;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  border-bottom: none !important;
+  cursor: pointer;
+}
+
+.footnote-backref:hover {
+  color: #6b7280;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+/* Highlight when target is clicked */
+.blog-post__footnotes li:target {
+  background-color: #fff3cd;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  margin-left: -0.5rem;
+}
