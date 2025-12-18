@@ -12,4 +12,9 @@ export default interface PostAttributes {
   relatedPosts?: string[];
   isPinned?: boolean;
   isDraft?: boolean;
+  // Article metadata for epics and literary works
+  author?: string;
+  epicName?: string;
+  verseNumber?: string;
+  articleMetadata?: string;
 }

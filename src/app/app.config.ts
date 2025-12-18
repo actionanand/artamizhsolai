@@ -11,11 +11,14 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideFileRouter, requestContextInterceptor } from '@analogjs/router';
 import { provideContent, withMarkdownRenderer } from '@analogjs/content';
 import { withShikiHighlighter } from '@analogjs/content/shiki-highlighter';
+import { provideRouter } from '@angular/router';
+import { routes } from './routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideFileRouter(),
+    provideRouter(routes),
     provideHttpClient(
       withFetch(),
       withInterceptors([requestContextInterceptor])
