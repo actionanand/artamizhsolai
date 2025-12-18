@@ -118,6 +118,12 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
             <p class="post-preview__date">{{ post.attributes.date }}</p>
             }
             <div class="post-preview__meta">
+              @if (post.attributes.isDraft) {
+              <span class="post-meta-tag draft-tag">📝 Draft</span>
+              }
+              @if (post.attributes.isPinned) {
+              <span class="post-meta-tag pinned-tag">📌 Pinned</span>
+              }
               <span class="post-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
               @if (post.attributes.tags && post.attributes.tags.length > 0) {
               @for (tag of post.attributes.tags; track tag) {
@@ -372,6 +378,20 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
       border: 1px solid #7b1fa2;
     }
 
+    .pinned-tag {
+      background: #fff3cd;
+      color: #664d03;
+      border: 1px solid #ffecb5;
+      font-weight: 600;
+    }
+
+    .draft-tag {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      font-weight: 600;
+    }
+
     .post-preview__description {
       color: #495057;
       margin: 0 0 1rem 0;
@@ -497,13 +517,34 @@ export default class Blog implements OnInit {
   currentPage = 1;
   totalPages = 1;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {
+    this.extractAndSortPosts();
+  }
 
   ngOnInit() {
-    this.extractCategories();
-    this.extractTags();
     this.applyFilters();
     this.subscribeToQueryParams();
+  }
+
+  private extractAndSortPosts() {
+    // In production builds, filter out drafts. In development, show them with badge
+    const isDev = !import.meta.env.PROD;
+    const publishedPosts = isDev ? this.posts : this.posts.filter(post => !post.attributes.isDraft);
+    
+    // Sort with pinned posts at top, then by date
+    publishedPosts.sort((a, b) => {
+      // Pinned posts first
+      if (a.attributes.isPinned && !b.attributes.isPinned) return -1;
+      if (!a.attributes.isPinned && b.attributes.isPinned) return 1;
+      // Then by date (newest first)
+      return new Date(b.attributes.date || '').getTime() - new Date(a.attributes.date || '').getTime();
+    });
+    
+    // Update posts array with filtered and sorted posts
+    Object.assign(this, { posts: publishedPosts });
+    
+    this.extractCategories();
+    this.extractTags();
   }
 
   private extractCategories() {

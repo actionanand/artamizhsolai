@@ -31,6 +31,12 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
         <p class="blog-post__date">{{ post.attributes.date }}</p>
         }
         <div class="blog-post__meta">
+          @if (post.attributes.isDraft) {
+          <span class="post-meta-tag draft-tag">📝 Draft</span>
+          }
+          @if (post.attributes.isPinned) {
+          <span class="post-meta-tag pinned-tag">📌 Pinned</span>
+          }
           <span class="post-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
           @if (post.attributes.tags && post.attributes.tags.length > 0) {
           @for (tag of post.attributes.tags; track tag) {
@@ -189,6 +195,20 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
       background: #f3e5f5;
       color: #7b1fa2;
       border: 1px solid #7b1fa2;
+    }
+
+    .pinned-tag {
+      background: #fff3cd;
+      color: #664d03;
+      border: 1px solid #ffecb5;
+      font-weight: 600;
+    }
+
+    .draft-tag {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      font-weight: 600;
     }
 
     .blog-post__image {
@@ -480,8 +500,10 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
   @ViewChild('contentRef') contentRef?: ElementRef;
 
   readonly post$ = injectContent<PostAttributes>('slug');
-  readonly allPosts = injectContentFiles<PostAttributes>();
   readonly defaultCoverImage = 'tamil-literature-default.svg';
+  
+  private allPostsData: any;
+  allPosts: any[] = [];
 
   headings: HeadingLink[] = [];
   relatedPosts: any[] = [];
@@ -501,6 +523,16 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
     private cdr: ChangeDetectorRef
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
+    
+    // Filter and sort posts on initialization
+    const allPostsData = injectContentFiles<PostAttributes>();
+    const isDev = !import.meta.env.PROD;
+    const publishedPosts = isDev ? allPostsData : allPostsData.filter(post => !post.attributes.isDraft);
+    this.allPosts = publishedPosts.sort((a: any, b: any) => {
+      if (a.attributes.isPinned && !b.attributes.isPinned) return -1;
+      if (!a.attributes.isPinned && b.attributes.isPinned) return 1;
+      return new Date(b.attributes.date || '').getTime() - new Date(a.attributes.date || '').getTime();
+    });
   }
 
   ngOnInit() {
@@ -605,7 +637,7 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
 
   private updateNavigation() {
     const currentIndex = this.allPosts.findIndex(
-      (p) => p.attributes.slug === this.currentSlug
+      (p: any) => p.attributes.slug === this.currentSlug
     );
 
     if (currentIndex > 0) {
@@ -631,7 +663,7 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
     const slugsToProcess = relatedSlugs.slice(0, 5);
     
     slugsToProcess.forEach(slug => {
-      const post = this.allPosts.find(p => p.attributes.slug === slug);
+      const post = this.allPosts.find((p: any) => p.attributes.slug === slug);
       if (post) {
         this.relatedPosts.push(post);
       }

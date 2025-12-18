@@ -86,6 +86,12 @@ import PostAttributes from '../post-attributes';
               <span class="archive-year__date">— {{ post.attributes.date }}</span>
               }
               <div class="archive-year__meta">
+                @if (post.attributes.isDraft) {
+                <span class="archive-meta-tag draft-tag">📝 Draft</span>
+                }
+                @if (post.attributes.isPinned) {
+                <span class="archive-meta-tag pinned-tag">📌 Pinned</span>
+                }
                 <span class="archive-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
                 @if (post.attributes.tags && post.attributes.tags.length > 0) {
                 @for (tag of post.attributes.tags; track tag) {
@@ -259,6 +265,20 @@ import PostAttributes from '../post-attributes';
       border: 1px solid #7b1fa2;
     }
 
+    .pinned-tag {
+      background: #fff3cd;
+      color: #664d03;
+      border: 1px solid #ffecb5;
+      font-weight: 600;
+    }
+
+    .draft-tag {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      font-weight: 600;
+    }
+
     .no-posts {
       text-align: center;
       padding: 2rem;
@@ -313,10 +333,29 @@ export default class YearArchivePage {
   readonly maxPerYear = paginationConfig.archivePageSize;
 
   constructor(private route: ActivatedRoute) {
+    this.filterAndSortPosts();
     this.groupByYear();
     this.extractCategories();
     this.extractTags();
     this.subscribeToQueryParams();
+  }
+
+  private filterAndSortPosts() {
+    // Filter out draft posts in production, show all in development
+    const isDev = !import.meta.env.PROD;
+    const publishedPosts = isDev ? this.posts : this.posts.filter(post => !post.attributes.isDraft);
+    
+    // Sort with pinned posts at top, then by date
+    publishedPosts.sort((a, b) => {
+      // Pinned posts first
+      if (a.attributes.isPinned && !b.attributes.isPinned) return -1;
+      if (!a.attributes.isPinned && b.attributes.isPinned) return 1;
+      // Then by date (newest first)
+      return new Date(b.attributes.date || '').getTime() - new Date(a.attributes.date || '').getTime();
+    });
+    
+    // Update posts array
+    Object.assign(this, { posts: publishedPosts });
   }
 
   private groupByYear() {
