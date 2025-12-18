@@ -14,6 +14,8 @@ category: "Technology"
 tags: ["angular", "typescript", "web-development", "frontend"]
 toc: true
 disclaimerEnabled: false
+isPinned: true    # Makes it appear at top in all lists
+isDraft: true     # Excludes it from production builds
 ---
 
 # Building Angular Apps with TypeScript

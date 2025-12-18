@@ -12,7 +12,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
   imports: [RouterLink],
   template: `
     <section class="hero">
-      <h1 class="hero__title">Welcome to தமிழ் சோலை</h1>
+      <h1 class="hero__title">Welcome to AR தமிழ் சோலை</h1>
       <p class="hero__subtitle">Explore articles, stories, and insights</p>
       <a routerLink="/blog" class="hero__cta">Read Blog</a>
     </section>
@@ -28,6 +28,12 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
             [alt]="post.attributes.title"
           />
           <div class="post-card__content">
+            @if (post.attributes.isDraft) {
+            <div class="post-card__badge">📝 Draft</div>
+            }
+            @if (post.attributes.isPinned) {
+            <div class="post-card__badge">📌 Pinned</div>
+            }
             <h3 class="post-card__title">{{ post.attributes.title }}</h3>
             @if (post.attributes.date) {
             <p class="post-card__date">{{ post.attributes.date }}</p>
@@ -141,6 +147,18 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
       margin: 0 0 0.75rem 0;
     }
 
+    .post-card__badge {
+      display: inline-block;
+      background: #fff3cd;
+      color: #664d03;
+      border: 1px solid #ffecb5;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
     .post-card__description {
       color: #495057;
       margin: 0 0 1rem 0;
@@ -207,6 +225,30 @@ export default class HomePage implements OnInit {
   recentPosts: typeof this.posts = [];
 
   ngOnInit() {
-    this.recentPosts = this.posts.slice(0, paginationConfig.homeRecentPostsCount);
+    this.loadRecentPosts();
+  }
+
+  private loadRecentPosts() {
+    // Filter out draft posts in production, show all in development
+    const isDev = !import.meta.env.PROD;
+    const publishedPosts = isDev ? this.posts : this.posts.filter(post => !post.attributes.isDraft);
+    
+    // Sort with pinned posts at top, then by date
+    const sortedPosts = [...publishedPosts].sort((a, b) => {
+      // Pinned posts first
+      if (a.attributes.isPinned && !b.attributes.isPinned) return -1;
+      if (!a.attributes.isPinned && b.attributes.isPinned) return 1;
+      // Then by date (newest first)
+      return new Date(b.attributes.date || '').getTime() - new Date(a.attributes.date || '').getTime();
+    });
+
+    // Get pinned and non-pinned posts
+    const pinnedPosts = sortedPosts.filter(p => p.attributes.isPinned);
+    const regularPosts = sortedPosts.filter(p => !p.attributes.isPinned);
+
+    // Combine: show all pinned posts + fill remaining count with regular posts
+    const configCount = paginationConfig.homeRecentPostsCount;
+    const remainingSlots = Math.max(0, configCount - pinnedPosts.length);
+    this.recentPosts = [...pinnedPosts, ...regularPosts.slice(0, remainingSlots)];
   }
 }

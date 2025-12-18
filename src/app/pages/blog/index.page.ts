@@ -56,14 +56,16 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
             >
               All
             </button>
-            @for (tag of availableTags; track tag) {
-            <button 
-              class="filter-tag"
-              [class.active]="selectedTags.includes(tag)"
-              (click)="toggleTag(tag)"
-            >
-              {{ tag }} ({{ getPostsCountByTag(tag) }})
-            </button>
+            @for (tag of getFilteredTags(); track tag) {
+              @if (getPostsCountByTag(tag) > 0) {
+              <button 
+                class="filter-tag"
+                [class.active]="selectedTags.includes(tag)"
+                (click)="toggleTag(tag)"
+              >
+                {{ tag }} ({{ getPostsCountByTag(tag) }})
+              </button>
+              }
             }
           </div>
         </div>
@@ -116,6 +118,12 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
             <p class="post-preview__date">{{ post.attributes.date }}</p>
             }
             <div class="post-preview__meta">
+              @if (post.attributes.isDraft) {
+              <span class="post-meta-tag draft-tag">📝 Draft</span>
+              }
+              @if (post.attributes.isPinned) {
+              <span class="post-meta-tag pinned-tag">📌 Pinned</span>
+              }
               <span class="post-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
               @if (post.attributes.tags && post.attributes.tags.length > 0) {
               @for (tag of post.attributes.tags; track tag) {
@@ -370,6 +378,20 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
       border: 1px solid #7b1fa2;
     }
 
+    .pinned-tag {
+      background: #fff3cd;
+      color: #664d03;
+      border: 1px solid #ffecb5;
+      font-weight: 600;
+    }
+
+    .draft-tag {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      font-weight: 600;
+    }
+
     .post-preview__description {
       color: #495057;
       margin: 0 0 1rem 0;
@@ -420,24 +442,28 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
     }
 
     .page-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       border: 1px solid #0d6efd;
-      background: #0d6efd;
+      background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
       color: white;
       border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
-      transition: background 0.2s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(13, 110, 253, 0.3);
     }
 
     .page-btn:hover:not(:disabled) {
-      background: #0b5ed7;
-      border-color: #0b5ed7;
+      background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
+      border-color: #0a58ca;
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.4);
+      transform: translateY(-1px);
     }
 
     .page-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+      transform: none;
     }
 
     .page-info {
@@ -491,13 +517,34 @@ export default class Blog implements OnInit {
   currentPage = 1;
   totalPages = 1;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) {
+    this.extractAndSortPosts();
+  }
 
   ngOnInit() {
-    this.extractCategories();
-    this.extractTags();
     this.applyFilters();
     this.subscribeToQueryParams();
+  }
+
+  private extractAndSortPosts() {
+    // In production builds, filter out drafts. In development, show them with badge
+    const isDev = !import.meta.env.PROD;
+    const publishedPosts = isDev ? this.posts : this.posts.filter(post => !post.attributes.isDraft);
+    
+    // Sort with pinned posts at top, then by date
+    publishedPosts.sort((a, b) => {
+      // Pinned posts first
+      if (a.attributes.isPinned && !b.attributes.isPinned) return -1;
+      if (!a.attributes.isPinned && b.attributes.isPinned) return 1;
+      // Then by date (newest first)
+      return new Date(b.attributes.date || '').getTime() - new Date(a.attributes.date || '').getTime();
+    });
+    
+    // Update posts array with filtered and sorted posts
+    Object.assign(this, { posts: publishedPosts });
+    
+    this.extractCategories();
+    this.extractTags();
   }
 
   private extractCategories() {
@@ -600,9 +647,36 @@ export default class Blog implements OnInit {
     return this.posts.filter(p => p.attributes.category === category).length;
   }
 
+  getFilteredTags(): string[] {
+    if (!this.selectedCategory) {
+      // Show all tags when no category selected
+      return this.availableTags;
+    }
+
+    // Filter tags to show only those with posts in selected category
+    const validTags = new Set<string>();
+    this.posts.forEach(post => {
+      const postCategory = post.attributes.category || 'uncategorized';
+      if (postCategory === this.selectedCategory && post.attributes.tags) {
+        post.attributes.tags.forEach(tag => validTags.add(tag));
+      }
+    });
+    return Array.from(validTags).sort();
+  }
+
   getPostsCountByTag(tag: string): number {
-    return this.posts.filter(p => 
-      p.attributes.tags && p.attributes.tags.includes(tag)
-    ).length;
+    if (!this.selectedCategory) {
+      // Count all posts with this tag
+      return this.posts.filter(p => 
+        p.attributes.tags && p.attributes.tags.includes(tag)
+      ).length;
+    }
+
+    // Count posts with this tag in selected category
+    return this.posts.filter(p => {
+      const postCategory = p.attributes.category || 'uncategorized';
+      return postCategory === this.selectedCategory &&
+        p.attributes.tags && p.attributes.tags.includes(tag);
+    }).length;
   }
 }

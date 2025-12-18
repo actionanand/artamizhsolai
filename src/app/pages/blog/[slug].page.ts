@@ -31,6 +31,12 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
         <p class="blog-post__date">{{ post.attributes.date }}</p>
         }
         <div class="blog-post__meta">
+          @if (post.attributes.isDraft) {
+          <span class="post-meta-tag draft-tag">📝 Draft</span>
+          }
+          @if (post.attributes.isPinned) {
+          <span class="post-meta-tag pinned-tag">📌 Pinned</span>
+          }
           <span class="post-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
           @if (post.attributes.tags && post.attributes.tags.length > 0) {
           @for (tag of post.attributes.tags; track tag) {
@@ -62,32 +68,68 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
 
       @if (showDisclaimer) {
       <section class="blog-post__disclaimer">
+        <div class="disclaimer-header">
+          <svg class="disclaimer-icon" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+            <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="12" cy="16" r="0.5" fill="currentColor"/>
+          </svg>
+          <h4>Disclaimer</h4>
+        </div>
         <p>{{ disclaimerText }}</p>
       </section>
       }
 
-      <section class="blog-post__sidebar">
-        <div class="recent-posts-widget">
-          <h3>Recent Posts</h3>
-          <ul class="recent-posts-list">
-            @for (p of recentPosts; track p.attributes.slug) {
-            @if (p.attributes.slug !== currentSlug) {
-            <li class="recent-post-item">
+      <section class="blog-post__related">
+        @if (relatedPosts.length > 0) {
+        <div class="related-posts">
+          <h3>Related Posts</h3>
+          <ul class="posts-list">
+            @for (p of relatedPosts; track p.attributes.slug) {
+            <li class="post-item">
               @if (p.attributes.coverImage || defaultCoverImage) {
               <img 
-                class="recent-post-thumbnail" 
+                class="post-thumbnail" 
                 [src]="p.attributes.coverImage || defaultCoverImage"
                 [alt]="p.attributes.title"
               />
               }
-              <a [routerLink]="['/blog', p.attributes.slug]">
-                {{ p.attributes.title }}
-              </a>
+              <div class="post-info">
+                <a [routerLink]="['/blog', p.attributes.slug]" class="post-link">{{ p.attributes.title }}</a>
+                @if (p.attributes.date) {
+                <span class="post-date">{{ p.attributes.date }}</span>
+                }
+              </div>
+            </li>
+            }
+          </ul>
+        </div>
+        } @else {
+        <div class="recent-posts">
+          <h3>Recent Posts</h3>
+          <ul class="posts-list">
+            @for (p of recentPosts; track p.attributes.slug) {
+            @if (p.attributes.slug !== currentSlug) {
+            <li class="post-item">
+              @if (p.attributes.coverImage || defaultCoverImage) {
+              <img 
+                class="post-thumbnail" 
+                [src]="p.attributes.coverImage || defaultCoverImage"
+                [alt]="p.attributes.title"
+              />
+              }
+              <div class="post-info">
+                <a [routerLink]="['/blog', p.attributes.slug]" class="post-link">{{ p.attributes.title }}</a>
+                @if (p.attributes.date) {
+                <span class="post-date">{{ p.attributes.date }}</span>
+                }
+              </div>
             </li>
             }
             }
           </ul>
         </div>
+        }
       </section>
 
       <app-post-navigation 
@@ -155,6 +197,20 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
       border: 1px solid #7b1fa2;
     }
 
+    .pinned-tag {
+      background: #fff3cd;
+      color: #664d03;
+      border: 1px solid #ffecb5;
+      font-weight: 600;
+    }
+
+    .draft-tag {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      font-weight: 600;
+    }
+
     .blog-post__image {
       width: 100%;
       height: auto;
@@ -196,63 +252,143 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
 
     .blog-post__disclaimer {
       margin: 2rem 0;
-      padding: 1rem 1.25rem;
-      border-left: 4px solid #ffc107;
-      background: #fff3cd;
-      color: #856404;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%);
+      border-left: 4px solid #9e9e9e;
       border-radius: 6px;
+      color: #424242;
+      position: relative;
+      transform: translateX(-8px);
+      box-shadow: -4px 4px 12px rgba(158, 158, 158, 0.1);
     }
 
-    .recent-posts-widget {
-      background-color: #f8f9fa;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      padding: 1.5rem;
-      position: sticky;
-      top: 100px;
-      max-height: 70vh;
-      overflow-y: auto;
-    }
-
-    .recent-posts-widget h3 {
-      font-size: 1rem;
-      margin: 0 0 1rem 0;
-      color: #212529;
-    }
-
-    .recent-posts-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .recent-post-item {
-      margin-bottom: 1rem;
+    .disclaimer-header {
       display: flex;
+      align-items: center;
       gap: 0.75rem;
-      align-items: flex-start;
+      margin-bottom: 0.75rem;
     }
 
-    .recent-post-thumbnail {
-      width: 60px;
-      height: 60px;
-      object-fit: cover;
-      border-radius: 6px;
+    .disclaimer-icon {
+      width: 20px;
+      height: 20px;
+      color: #9e9e9e;
       flex-shrink: 0;
     }
 
-    .recent-posts-list a {
-      color: #495057;
-      text-decoration: none;
-      transition: color 0.2s ease;
+    .blog-post__disclaimer h4 {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #9e9e9e;
+    }
+
+    .blog-post__disclaimer p {
+      margin: 0;
       font-size: 0.95rem;
-      line-height: 1.4;
-      display: block;
+      line-height: 1.6;
+      color: #616161;
+    }
+
+    .blog-post__related {
+      margin: 3rem 0 2rem 0;
+    }
+
+    .related-posts,
+    .recent-posts {
+      padding: 1.5rem 0;
+    }
+
+    .related-posts h3,
+    .recent-posts h3 {
+      font-size: 1.25rem;
+      margin: 0 0 1.5rem 0;
+      color: #212529;
+      border-bottom: 2px solid #0d6efd;
+      padding-bottom: 0.75rem;
+    }
+
+    .posts-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .post-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .post-item:hover {
+      border-color: #0d6efd;
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.1);
+    }
+
+    .post-thumbnail {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+    }
+
+    .post-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
       flex: 1;
     }
 
-    .recent-posts-list a:hover {
+    .post-link {
       color: #0d6efd;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      line-height: 1.4;
+      transition: color 0.2s ease;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .post-link:hover {
+      color: #0b5ed7;
+      text-decoration: underline;
+    }
+
+    .post-date {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    @media (max-width: 768px) {
+      .posts-list {
+        grid-template-columns: 1fr;
+      }
+
+      .post-item {
+        flex-direction: row;
+      }
+
+      .post-thumbnail {
+        width: 120px;
+        height: 120px;
+        flex-shrink: 0;
+      }
+
+      .post-info {
+        justify-content: center;
+      }
     }
 
     @media (max-width: 1024px) {
@@ -364,10 +500,13 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
   @ViewChild('contentRef') contentRef?: ElementRef;
 
   readonly post$ = injectContent<PostAttributes>('slug');
-  readonly allPosts = injectContentFiles<PostAttributes>();
   readonly defaultCoverImage = 'tamil-literature-default.svg';
+  
+  private allPostsData: any;
+  allPosts: any[] = [];
 
   headings: HeadingLink[] = [];
+  relatedPosts: any[] = [];
   recentPosts: any[] = [];
   previousPost: any = null;
   nextPost: any = null;
@@ -384,6 +523,16 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
     private cdr: ChangeDetectorRef
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
+    
+    // Filter and sort posts on initialization
+    const allPostsData = injectContentFiles<PostAttributes>();
+    const isDev = !import.meta.env.PROD;
+    const publishedPosts = isDev ? allPostsData : allPostsData.filter(post => !post.attributes.isDraft);
+    this.allPosts = publishedPosts.sort((a: any, b: any) => {
+      if (a.attributes.isPinned && !b.attributes.isPinned) return -1;
+      if (!a.attributes.isPinned && b.attributes.isPinned) return 1;
+      return new Date(b.attributes.date || '').getTime() - new Date(a.attributes.date || '').getTime();
+    });
   }
 
   ngOnInit() {
@@ -395,7 +544,9 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
         this.showDisclaimer = post.attributes.disclaimerEnabled !== false; // default true
         this.disclaimerText = post.attributes.disclaimerText || this.disclaimerText;
         this.updateNavigation();
-        this.recentPosts = this.allPosts.slice(0, paginationConfig.articleRecentPostsCount);
+        this.updateRelatedPosts(post.attributes.relatedPosts);
+        // Fetch one extra post to account for filtering out current post in template
+        this.recentPosts = this.allPosts.slice(0, paginationConfig.articleRecentPostsCount + 1);
         // Reset TOC state when navigating to a new post
         this.headings = [];
         this.hasExtractedHeadings = false;
@@ -486,7 +637,7 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
 
   private updateNavigation() {
     const currentIndex = this.allPosts.findIndex(
-      (p) => p.attributes.slug === this.currentSlug
+      (p: any) => p.attributes.slug === this.currentSlug
     );
 
     if (currentIndex > 0) {
@@ -501,4 +652,22 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
       this.nextPost = null;
     }
   }
+
+  private updateRelatedPosts(relatedSlugs?: string[]) {
+    this.relatedPosts = [];
+    if (!relatedSlugs || relatedSlugs.length === 0) {
+      return;
+    }
+
+    // Maximum 5 related posts
+    const slugsToProcess = relatedSlugs.slice(0, 5);
+    
+    slugsToProcess.forEach(slug => {
+      const post = this.allPosts.find((p: any) => p.attributes.slug === slug);
+      if (post) {
+        this.relatedPosts.push(post);
+      }
+    });
+  }
 }
+

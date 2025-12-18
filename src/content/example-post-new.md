@@ -6,6 +6,7 @@ date: December 12, 2022
 toc: false
 category: "Technology"
 tags: ["angular", "typescript", "web-development"]
+isPinned: true
 ---
 
 # Example Blog Post

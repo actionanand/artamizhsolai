@@ -9,4 +9,7 @@ export default interface PostAttributes {
   toc?: boolean;
   disclaimerEnabled?: boolean;
   disclaimerText?: string;
+  relatedPosts?: string[];
+  isPinned?: boolean;
+  isDraft?: boolean;
 }
