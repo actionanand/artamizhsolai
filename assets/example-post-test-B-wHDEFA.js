@@ -4,6 +4,7 @@ slug: 2022-12-29-my-first-post-new
 description: My First Post Description
 date: December 27, 2024
 coverImage: https://images.unsplash.com/photo-1493612276216-ee3925520721?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=464&q=80
+isDraft: true
 ---
 
 <h1 id="example-blog-post-1">Example Blog Post</h1>

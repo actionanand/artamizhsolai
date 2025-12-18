@@ -1,4 +1,4 @@
-import{i as g,ɵ as m,R as h,a as t,b as o,c as e,f as b,h as i,k as f,x as u,e as x,l as p,r as d,y as C,p as _,j as P,s as O}from"./index-CkeyZ3PQ.js";import{p as M}from"./pagination-config-BIRU8DJ8.js";const k=r=>["/blog",r],w=(r,a)=>a.attributes.slug;function v(r,a){if(r&1&&(t(0,"p",12),o(1),e()),r&2){const n=p().$implicit;i(),_(n.attributes.date)}}function y(r,a){if(r&1&&(t(0,"article",6),u(1,"img",9),t(2,"div",10)(3,"h3",11),o(4),e(),x(5,v,2,1,"p",12),t(6,"p",13),o(7),e(),t(8,"a",14),o(9," Read More → "),e()()()),r&2){const n=a.$implicit,l=p();i(),d("src",n.attributes.coverImage||l.defaultCoverImage,C)("alt",n.attributes.title),i(3),_(n.attributes.title),i(),P(n.attributes.date?5:-1),i(2),_(n.attributes.description),i(),d("routerLink",O(6,k,n.attributes.slug))}}const z="tamil-literature-default.svg",s=class s{constructor(){this.posts=g(),this.defaultCoverImage=z,this.recentPosts=[]}ngOnInit(){this.recentPosts=this.posts.slice(0,M.homeRecentPostsCount)}};s.ɵfac=function(n){return new(n||s)},s.ɵcmp=m({type:s,selectors:[["app-home"]],decls:16,vars:0,consts:[[1,"hero"],[1,"hero__title"],[1,"hero__subtitle"],["routerLink","/blog",1,"hero__cta"],[1,"recent-posts"],[1,"posts-grid"],[1,"post-card"],[1,"all-posts-link"],["routerLink","/blog",1,"btn-link"],[1,"post-card__image",3,"src","alt"],[1,"post-card__content"],[1,"post-card__title"],[1,"post-card__date"],[1,"post-card__description"],[1,"post-card__link",3,"routerLink"]],template:function(n,l){n&1&&(t(0,"section",0)(1,"h1",1),o(2,"Welcome to தமிழ் சோலை"),e(),t(3,"p",2),o(4,"Explore articles, stories, and insights"),e(),t(5,"a",3),o(6,"Read Blog"),e()(),t(7,"section",4)(8,"h2"),o(9,"Recent Posts"),e(),t(10,"div",5),b(11,y,10,8,"article",6,w),e(),t(13,"div",7)(14,"a",8),o(15,"View All Posts →"),e()()()),n&2&&(i(11),f(l.recentPosts))},dependencies:[h],styles:[`.hero[_ngcontent-%COMP%] {
+import{i as x,ɵ as C,R as O,a as t,b as r,c as o,f as M,h as a,k,x as v,e as p,l as f,r as b,y as w,j as g,p as m,s as y}from"./index-C3nhz1DW.js";import{p as z}from"./pagination-config-BIRU8DJ8.js";const T=e=>["/blog",e],R=(e,i)=>i.attributes.slug;function F(e,i){e&1&&(t(0,"div",11),r(1,"📝 Draft"),o())}function j(e,i){e&1&&(t(0,"div",11),r(1,"📌 Pinned"),o())}function D(e,i){if(e&1&&(t(0,"p",13),r(1),o()),e&2){const n=f().$implicit;a(),m(n.attributes.date)}}function I(e,i){if(e&1&&(t(0,"article",6),v(1,"img",9),t(2,"div",10),p(3,F,2,0,"div",11),p(4,j,2,0,"div",11),t(5,"h3",12),r(6),o(),p(7,D,2,1,"p",13),t(8,"p",14),r(9),o(),t(10,"a",15),r(11," Read More → "),o()()()),e&2){const n=i.$implicit,c=f();a(),b("src",n.attributes.coverImage||c.defaultCoverImage,w)("alt",n.attributes.title),a(2),g(n.attributes.isDraft?3:-1),a(),g(n.attributes.isPinned?4:-1),a(2),m(n.attributes.title),a(),g(n.attributes.date?7:-1),a(2),m(n.attributes.description),a(),b("routerLink",y(8,T,n.attributes.slug))}}const L="tamil-literature-default.svg",d=class d{constructor(){this.posts=x(),this.defaultCoverImage=L,this.recentPosts=[]}ngOnInit(){this.loadRecentPosts()}loadRecentPosts(){const n=[...this.posts.filter(s=>!s.attributes.isDraft)].sort((s,_)=>s.attributes.isPinned&&!_.attributes.isPinned?-1:!s.attributes.isPinned&&_.attributes.isPinned?1:new Date(_.attributes.date||"").getTime()-new Date(s.attributes.date||"").getTime()),c=n.filter(s=>s.attributes.isPinned),u=n.filter(s=>!s.attributes.isPinned),h=z.homeRecentPostsCount,P=Math.max(0,h-c.length);this.recentPosts=[...c,...u.slice(0,P)]}};d.ɵfac=function(n){return new(n||d)},d.ɵcmp=C({type:d,selectors:[["app-home"]],decls:16,vars:0,consts:[[1,"hero"],[1,"hero__title"],[1,"hero__subtitle"],["routerLink","/blog",1,"hero__cta"],[1,"recent-posts"],[1,"posts-grid"],[1,"post-card"],[1,"all-posts-link"],["routerLink","/blog",1,"btn-link"],[1,"post-card__image",3,"src","alt"],[1,"post-card__content"],[1,"post-card__badge"],[1,"post-card__title"],[1,"post-card__date"],[1,"post-card__description"],[1,"post-card__link",3,"routerLink"]],template:function(n,c){n&1&&(t(0,"section",0)(1,"h1",1),r(2,"Welcome to AR தமிழ் சோலை"),o(),t(3,"p",2),r(4,"Explore articles, stories, and insights"),o(),t(5,"a",3),r(6,"Read Blog"),o()(),t(7,"section",4)(8,"h2"),r(9,"Recent Posts"),o(),t(10,"div",5),M(11,I,12,10,"article",6,R),o(),t(13,"div",7)(14,"a",8),r(15,"View All Posts →"),o()()()),n&2&&(a(11),k(c.recentPosts))},dependencies:[O],styles:[`.hero[_ngcontent-%COMP%] {
       text-align: center;
       padding: 4rem 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -90,6 +90,18 @@ import{i as g,ɵ as m,R as h,a as t,b as o,c as e,f as b,h as i,k as f,x as u,e 
       margin: 0 0 0.75rem 0;
     }
 
+    .post-card__badge[_ngcontent-%COMP%] {
+      display: inline-block;
+      background: #fff3cd;
+      color: #664d03;
+      border: 1px solid #ffecb5;
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
     .post-card__description[_ngcontent-%COMP%] {
       color: #495057;
       margin: 0 0 1rem 0;
@@ -147,4 +159,4 @@ import{i as g,ɵ as m,R as h,a as t,b as o,c as e,f as b,h as i,k as f,x as u,e 
       .posts-grid[_ngcontent-%COMP%] {
         grid-template-columns: 1fr;
       }
-    }`]});let c=s;const T=Object.freeze(Object.defineProperty({__proto__:null,default:c},Symbol.toStringTag,{value:"Module"})),F=Object.freeze(Object.defineProperty({__proto__:null,default:c},Symbol.toStringTag,{value:"Module"}));export{T as h,F as i};
+    }`]});let l=d;const A=Object.freeze(Object.defineProperty({__proto__:null,default:l},Symbol.toStringTag,{value:"Module"})),H=Object.freeze(Object.defineProperty({__proto__:null,default:l},Symbol.toStringTag,{value:"Module"}));export{A as h,H as i};
