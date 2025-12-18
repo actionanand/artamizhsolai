@@ -44,6 +44,30 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
           }
           }
         </div>
+        @if (post.attributes.author || post.attributes.epicName || post.attributes.verseNumber || post.attributes.articleMetadata) {
+        <div class="blog-post__article-meta">
+          @if (post.attributes.author) {
+          <div class="article-meta-item">
+            <strong>Author:</strong> {{ post.attributes.author }}
+          </div>
+          }
+          @if (post.attributes.epicName) {
+          <div class="article-meta-item">
+            <strong>Epic:</strong> {{ post.attributes.epicName }}
+          </div>
+          }
+          @if (post.attributes.verseNumber) {
+          <div class="article-meta-item">
+            <strong>Verse Number:</strong> {{ post.attributes.verseNumber }}
+          </div>
+          }
+          @if (post.attributes.articleMetadata) {
+          <div class="article-meta-item">
+            <strong>Info:</strong> {{ post.attributes.articleMetadata }}
+          </div>
+          }
+        </div>
+        }
         <p class="blog-post__description">{{ post.attributes.description }}</p>
       </header>
 
@@ -493,6 +517,35 @@ import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
 
     :host ::ng-deep analog-markdown a:hover {
       text-decoration: underline;
+    }
+
+    .blog-post__article-meta {
+      background: #f8f9fa;
+      border-left: 4px solid #0d6efd;
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1.5rem 0;
+    }
+
+    .article-meta-item {
+      font-size: 0.95rem;
+      color: #495057;
+      margin: 0.5rem 0;
+      line-height: 1.5;
+    }
+
+    .article-meta-item:first-child {
+      margin-top: 0;
+    }
+
+    .article-meta-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .article-meta-item strong {
+      color: #212529;
+      font-weight: 600;
+      margin-right: 0.5rem;
     }
   `,
 })

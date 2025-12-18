@@ -6,6 +6,10 @@ date: December 12, 2022
 toc: false
 category: "Technology"
 tags: ["angular", "typescript", "web-development"]
+author: "Ilango Adigal"
+epicName: "Silappatikaram"
+verseNumber: "I (Book I)"
+articleMetadata: "Written during the Sangam period, 5,730 lines"
 isPinned: true
 ---
 
