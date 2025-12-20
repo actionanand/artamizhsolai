@@ -715,7 +715,7 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
         const targetId = dataFn;
         const target = document.getElementById(targetId);
         if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' }); // start(default), center, end, nearest
           // Get base href from document
           const baseHref = document.querySelector('base')?.getAttribute('href') || '/';
           const basePath = baseHref.endsWith('/') ? baseHref : `${baseHref}/`;
