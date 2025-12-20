@@ -9,8 +9,10 @@ import PostAttributes from '../../post-attributes';
 import { extractHeadings, HeadingLink } from '../../utilities/markdown-utils';
 import { TableOfContentsComponent } from '../../components/table-of-contents.component';
 import { PostNavigationComponent } from '../../components/post-navigation.component';
+import { PasswordPromptComponent } from '../../components/password-prompt.component';
 import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
 import { ProcessFootnotesPipe } from '../../pipes/process-footnotes.pipe';
+import { PasswordProtectionService } from '../../services/password-protection.service';
 
 @Component({
   selector: 'app-blog-post',
@@ -21,80 +23,83 @@ import { ProcessFootnotesPipe } from '../../pipes/process-footnotes.pipe';
     MarkdownComponent,
     TableOfContentsComponent,
     PostNavigationComponent,
+    PasswordPromptComponent,
     AdmonitionTransformPipe,
     ProcessFootnotesPipe,
   ],
   template: `
     @if (post$ | async; as post) {
-    <article class="blog-post">
-      <header class="blog-post__header">
-        <h1 class="blog-post__title">{{ post.attributes.title }}</h1>
-        @if (post.attributes.date) {
-        <p class="blog-post__date">{{ post.attributes.date }}</p>
-        }
-        <div class="blog-post__meta">
-          @if (post.attributes.isDraft) {
-          <span class="post-meta-tag draft-tag">📝 Draft</span>
-          }
-          @if (post.attributes.isPinned) {
-          <span class="post-meta-tag pinned-tag">📌 Pinned</span>
-          }
-          <span class="post-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
-          @if (post.attributes.tags && post.attributes.tags.length > 0) {
-          @for (tag of post.attributes.tags; track tag) {
-          <span class="post-meta-tag tag-tag">{{ tag }}</span>
-          }
-          }
-        </div>
-        @if (post.attributes.author || post.attributes.epicName || post.attributes.verseNumber || post.attributes.articleMetadata) {
-        <div class="blog-post__article-meta">
-          @if (post.attributes.author) {
-          <div class="article-meta-item">
-            <strong>Author:</strong> {{ post.attributes.author }}
-          </div>
-          }
-          @if (post.attributes.epicName) {
-          <div class="article-meta-item">
-            <strong>Epic:</strong> {{ post.attributes.epicName }}
-          </div>
-          }
-          @if (post.attributes.verseNumber) {
-          <div class="article-meta-item">
-            <strong>Verse Number:</strong> {{ post.attributes.verseNumber }}
-          </div>
-          }
-          @if (post.attributes.articleMetadata) {
-          <div class="article-meta-item">
-            <strong>Info:</strong> {{ post.attributes.articleMetadata }}
-          </div>
-          }
-        </div>
-        }
-        <p class="blog-post__description">{{ post.attributes.description }}</p>
-      </header>
+      @if (!post.attributes.enableLock || isArticleUnlocked) {
+        <!-- Article is not locked or already unlocked -->
+        <article class="blog-post">
+          <header class="blog-post__header">
+            <h1 class="blog-post__title">{{ post.attributes.title }}</h1>
+            @if (post.attributes.date) {
+            <p class="blog-post__date">{{ post.attributes.date }}</p>
+            }
+            <div class="blog-post__meta">
+              @if (post.attributes.isDraft) {
+              <span class="post-meta-tag draft-tag">📝 Draft</span>
+              }
+              @if (post.attributes.isPinned) {
+              <span class="post-meta-tag pinned-tag">📌 Pinned</span>
+              }
+              <span class="post-meta-tag category-tag">{{ post.attributes.category || 'uncategorized' }}</span>
+              @if (post.attributes.tags && post.attributes.tags.length > 0) {
+              @for (tag of post.attributes.tags; track tag) {
+              <span class="post-meta-tag tag-tag">{{ tag }}</span>
+              }
+              }
+            </div>
+            @if (post.attributes.author || post.attributes.epicName || post.attributes.verseNumber || post.attributes.articleMetadata) {
+            <div class="blog-post__article-meta">
+              @if (post.attributes.author) {
+              <div class="article-meta-item">
+                <strong>Author:</strong> {{ post.attributes.author }}
+              </div>
+              }
+              @if (post.attributes.epicName) {
+              <div class="article-meta-item">
+                <strong>Epic:</strong> {{ post.attributes.epicName }}
+              </div>
+              }
+              @if (post.attributes.verseNumber) {
+              <div class="article-meta-item">
+                <strong>Verse Number:</strong> {{ post.attributes.verseNumber }}
+              </div>
+              }
+              @if (post.attributes.articleMetadata) {
+              <div class="article-meta-item">
+                <strong>Info:</strong> {{ post.attributes.articleMetadata }}
+              </div>
+              }
+            </div>
+            }
+            <p class="blog-post__description">{{ post.attributes.description }}</p>
+          </header>
 
-      <img 
-        class="blog-post__image" 
-        [src]="post.attributes.coverImage || defaultCoverImage"
-        [alt]="post.attributes.title"
-      />
+          <img 
+            class="blog-post__image" 
+            [src]="post.attributes.coverImage || defaultCoverImage"
+            [alt]="post.attributes.title"
+          />
 
-      <div class="blog-post__container" [class.blog-post__container--no-toc]="!showToc">
-        @if (showToc && headings.length > 0) {
-        <app-table-of-contents 
-          [headings]="headings"
-          class="blog-post__toc"
-        ></app-table-of-contents>
-        }
+          <div class="blog-post__container" [class.blog-post__container--no-toc]="!showToc">
+            @if (showToc && headings.length > 0) {
+            <app-table-of-contents 
+              [headings]="headings"
+              class="blog-post__toc"
+            ></app-table-of-contents>
+            }
 
-        <div class="blog-post__content" #contentRef>
-          @if (post.content) {
-          <analog-markdown [content]="(typeof post.content === 'string' ? post.content : '') | processFootnotes | admonitionTransform" />
-          }
-        </div>
-      </div>
+            <div class="blog-post__content" #contentRef>
+              @if (post.content) {
+              <analog-markdown [content]="(typeof post.content === 'string' ? post.content : '') | processFootnotes | admonitionTransform" />
+              }
+            </div>
+          </div>
 
-      @if (showDisclaimer) {
+          @if (showDisclaimer) {
       <section class="blog-post__disclaimer">
         <div class="disclaimer-header">
           <svg class="disclaimer-icon" viewBox="0 0 24 24" fill="currentColor">
@@ -164,8 +169,28 @@ import { ProcessFootnotesPipe } from '../../pipes/process-footnotes.pipe';
         [previousPost]="previousPost"
         [nextPost]="nextPost"
       ></app-post-navigation>
-    </article>
+      </article>
+      } @else {
+        <!-- Article is locked - show password prompt -->
+        <div class="locked-article-placeholder">
+          <div class="locked-article-content">
+            <h1 class="locked-article-title">🔒 {{ currentArticleTitle }}</h1>
+            <p class="locked-article-message">
+              This article is password protected. Please enter the password to access it.
+            </p>
+          </div>
+        </div>
+      }
     }
+
+    <!-- Password Prompt Modal -->
+    <app-password-prompt
+      [isOpen]="showPasswordPrompt"
+      [articleTitle]="currentArticleTitle"
+      (submit)="onPasswordSubmit($event)"
+      (close)="onPasswordPromptClose()"
+      #passwordPrompt
+    ></app-password-prompt>
   `,
   styles: `
     .blog-post {
@@ -551,6 +576,37 @@ import { ProcessFootnotesPipe } from '../../pipes/process-footnotes.pipe';
       font-weight: 600;
       margin-right: 0.5rem;
     }
+
+    /* Locked Article Styles */
+    .locked-article-placeholder {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .locked-article-content {
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, #f9fafb 0%, #fcfdfe 100%);
+      border: 2px solid #e5e7eb;
+      border-left: 5px solid #9ca3af;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .locked-article-title {
+      font-size: 2rem;
+      color: #374151;
+      margin: 0 0 1rem 0;
+      font-weight: 600;
+    }
+
+    .locked-article-message {
+      font-size: 1.05rem;
+      color: #6b7280;
+      line-height: 1.6;
+      margin: 0;
+    }
   `,
 })
 export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
@@ -568,16 +624,21 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
   previousPost: any = null;
   nextPost: any = null;
   currentSlug: string = '';
+  currentArticleTitle: string = '';
   showToc = true;
   showDisclaimer = true;
   disclaimerText = 'The views expressed are personal and for informational purposes only.';
+  showPasswordPrompt = false;
+  isArticleUnlocked = false;
+  private currentPostAttributes: PostAttributes | undefined;
   private mutationObserver?: MutationObserver;
   private hasExtractedHeadings = false;
   private isBrowser: boolean;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: object,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private passwordService: PasswordProtectionService
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     
@@ -594,8 +655,10 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
 
   ngOnInit() {
     this.post$.subscribe((post) => {
-      if (post) {
+      if (post && post.attributes) {
         this.currentSlug = post.attributes.slug;
+        this.currentArticleTitle = post.attributes.title;
+        this.currentPostAttributes = post.attributes as PostAttributes;
         // frontmatter overrides
         this.showToc = post.attributes.toc !== false; // default true
         this.showDisclaimer = post.attributes.disclaimerEnabled !== false; // default true
@@ -607,6 +670,12 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
         // Reset TOC state when navigating to a new post
         this.headings = [];
         this.hasExtractedHeadings = false;
+        
+        // Check if article is password protected
+        this.isArticleUnlocked = !post.attributes.enableLock || this.passwordService.isArticleUnlocked(this.currentSlug);
+        if (post.attributes.enableLock && !this.isArticleUnlocked) {
+          this.showPasswordPrompt = true;
+        }
         
         // Setup footnote navigation after content is loaded
         if (this.isBrowser) {
@@ -779,5 +848,42 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
       }
     });
   }
+
+  /**
+   * Handle password submission
+   */
+  async onPasswordSubmit(password: string): Promise<void> {
+    if (!this.currentPostAttributes?.lockedPassword) {
+      return;
+    }
+
+    const isCorrect = await this.passwordService.verifyPassword(password, this.currentPostAttributes.lockedPassword);
+    
+    if (isCorrect) {
+      // Password is correct, unlock the article
+      this.passwordService.unlockArticle(this.currentSlug);
+      this.isArticleUnlocked = true;
+      this.showPasswordPrompt = false;
+      this.cdr.detectChanges();
+    } else {
+      // Password is incorrect, show error
+      if (this.passwordPrompt) {
+        this.passwordPrompt.setError('Incorrect password. Please try again.');
+      }
+    }
+  }
+
+  /**
+   * Handle password prompt close
+   */
+  onPasswordPromptClose(): void {
+    if (!this.isArticleUnlocked) {
+      // User closed the dialog without unlocking
+      // Optionally redirect or show a message
+      this.showPasswordPrompt = false;
+    }
+  }
+
+  @ViewChild('passwordPrompt') passwordPrompt: PasswordPromptComponent | undefined;
 }
 
