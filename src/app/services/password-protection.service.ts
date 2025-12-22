@@ -1,10 +1,9 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-interface UnlockedArticle {
-  slug: string;
+interface StoredPassword {
+  passwordHash: string;
   unlockedAt: number; // timestamp
 }
 
@@ -12,15 +11,13 @@ interface UnlockedArticle {
   providedIn: 'root',
 })
 export class PasswordProtectionService {
-  private unlockedArticles = new BehaviorSubject<Set<string>>(new Set());
-  public unlockedArticles$ = this.unlockedArticles.asObservable();
   private isBrowser: boolean;
-  private readonly STORAGE_KEY = 'unlocked_articles_with_time';
+  private readonly STORAGE_KEY = 'article_password_session';
   private readonly PASSWORD_EXPIRATION_MS = environment.passwordExpirationHours * 60 * 60 * 1000;
 
   constructor(@Inject(PLATFORM_ID) platformId: object) {
     this.isBrowser = isPlatformBrowser(platformId);
-    this.loadUnlockedArticles();
+    this.cleanupExpiredPassword();
   }
 
   /**
@@ -45,162 +42,128 @@ export class PasswordProtectionService {
   /**
    * Mark an article as unlocked with timestamp
    */
-  unlockArticle(slug: string): void {
+  unlockArticle(passwordHash: string): void {
     if (!this.isBrowser) return;
 
-    const unlocked = this.unlockedArticles.value;
-    unlocked.add(slug);
-    this.unlockedArticles.next(unlocked);
-    this.saveUnlockedArticles();
+    try {
+      const stored: StoredPassword = {
+        passwordHash,
+        unlockedAt: Date.now(),
+      };
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(stored));
+      console.log('Password saved to localStorage:', { passwordHash: passwordHash.substring(0, 10) + '...', timestamp: stored.unlockedAt });
+    } catch (e) {
+      console.error('Failed to save password:', e);
+    }
   }
 
   /**
-   * Check if an article is unlocked and not expired
+   * Check if a password is valid and not expired
    */
-  isArticleUnlocked(slug: string): boolean {
+  isPasswordValid(expectedHash: string): boolean {
     if (!this.isBrowser) return false;
 
-    const stored = this.getStoredUnlockedArticles();
-    const article = stored.find((a) => a.slug === slug);
+    const stored = this.getStoredPassword();
+    if (!stored) {
+      console.log('No stored password found');
+      return false;
+    }
 
-    if (!article) {
+    // Check if password matches
+    if (stored.passwordHash !== expectedHash) {
+      console.log('Stored hash does not match expected hash');
+      console.log('Stored:', stored.passwordHash);
+      console.log('Expected:', expectedHash);
       return false;
     }
 
     // Check if password has expired
     const now = Date.now();
-    const elapsed = now - article.unlockedAt;
+    const elapsed = now - stored.unlockedAt;
 
     if (elapsed > this.PASSWORD_EXPIRATION_MS) {
       // Password expired, remove it
-      this.lockArticle(slug);
+      console.log('Password expired');
+      this.clearPassword();
       return false;
     }
 
+    console.log('Password is valid');
     return true;
   }
 
   /**
-   * Lock an article
+   * Clear the stored password
    */
-  lockArticle(slug: string): void {
-    if (!this.isBrowser) return;
-
-    const unlocked = this.unlockedArticles.value;
-    unlocked.delete(slug);
-    this.unlockedArticles.next(unlocked);
-    this.saveUnlockedArticles();
-  }
-
-  /**
-   * Save unlocked articles to localStorage with timestamps
-   */
-  private saveUnlockedArticles(): void {
+  clearPassword(): void {
     if (!this.isBrowser) return;
 
     try {
-      const stored = this.getStoredUnlockedArticles();
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(stored));
+      localStorage.removeItem(this.STORAGE_KEY);
     } catch (e) {
-      console.error('Failed to save unlocked articles:', e);
+      console.error('Failed to clear password:', e);
     }
   }
 
   /**
-   * Get stored unlocked articles from localStorage
+   * Get stored password from localStorage
    */
-  private getStoredUnlockedArticles(): UnlockedArticle[] {
-    if (!this.isBrowser) return [];
+  private getStoredPassword(): StoredPassword | null {
+    if (!this.isBrowser) return null;
 
     try {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
-        return JSON.parse(stored) as UnlockedArticle[];
+        const parsed = JSON.parse(stored) as StoredPassword;
+        console.log('Retrieved password from localStorage:', { hash: parsed.passwordHash.substring(0, 10) + '...', timestamp: parsed.unlockedAt });
+        return parsed;
       }
     } catch (e) {
-      console.error('Failed to parse unlocked articles:', e);
+      console.error('Failed to parse stored password:', e);
     }
-    return [];
+    return null;
   }
 
   /**
-   * Load unlocked articles from localStorage
+   * Get stored password details (for debugging)
    */
-  private loadUnlockedArticles(): void {
+  getStoredPasswordDetails(): { hash: string; timestamp: number; isExpired: boolean } | null {
+    if (!this.isBrowser) return null;
+
+    const stored = this.getStoredPassword();
+    if (!stored) {
+      return null;
+    }
+
+    const now = Date.now();
+    const elapsed = now - stored.unlockedAt;
+    const isExpired = elapsed > this.PASSWORD_EXPIRATION_MS;
+
+    return {
+      hash: stored.passwordHash,
+      timestamp: stored.unlockedAt,
+      isExpired,
+    };
+  }
+
+  /**
+   * Cleanup expired password on initialization
+   */
+  private cleanupExpiredPassword(): void {
     if (!this.isBrowser) return;
 
     try {
-      const stored = this.getStoredUnlockedArticles();
-      const now = Date.now();
-      const valid: UnlockedArticle[] = [];
-
-      // Filter out expired passwords
-      stored.forEach((article) => {
-        const elapsed = now - article.unlockedAt;
-        if (elapsed <= this.PASSWORD_EXPIRATION_MS) {
-          valid.push(article);
+      const stored = this.getStoredPassword();
+      if (stored) {
+        const now = Date.now();
+        const elapsed = now - stored.unlockedAt;
+        if (elapsed > this.PASSWORD_EXPIRATION_MS) {
+          console.log('Password has expired, clearing it');
+          this.clearPassword();
         }
-      });
-
-      // Save back only valid ones
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(valid));
-
-      // Update the set
-      const slugs = valid.map((a) => a.slug);
-      this.unlockedArticles.next(new Set(slugs));
+      }
     } catch (e) {
-      console.error('Failed to load unlocked articles:', e);
+      console.error('Failed to cleanup expired password:', e);
     }
-  }
-
-  /**
-   * Clear all unlocked articles
-   */
-  clearUnlockedArticles(): void {
-    if (!this.isBrowser) return;
-
-    this.unlockedArticles.next(new Set());
-    try {
-      localStorage.removeItem(this.STORAGE_KEY);
-    } catch (e) {
-      console.error('Failed to clear unlocked articles:', e);
-    }
-  }
-
-  /**
-   * Get time remaining for an article (in milliseconds)
-   */
-  getTimeRemaining(slug: string): number {
-    if (!this.isBrowser) return 0;
-
-    const stored = this.getStoredUnlockedArticles();
-    const article = stored.find((a) => a.slug === slug);
-
-    if (!article) {
-      return 0;
-    }
-
-    const elapsed = Date.now() - article.unlockedAt;
-    const remaining = this.PASSWORD_EXPIRATION_MS - elapsed;
-
-    return Math.max(0, remaining);
-  }
-
-  /**
-   * Get formatted time remaining (e.g., "3h 45m")
-   */
-  getTimeRemainingFormatted(slug: string): string {
-    const ms = this.getTimeRemaining(slug);
-    if (ms <= 0) return '';
-
-    const hours = Math.floor(ms / (60 * 60 * 1000));
-    const minutes = Math.floor((ms % (60 * 60 * 1000)) / (60 * 1000));
-
-    const parts = [];
-    if (hours > 0) parts.push(`${hours}h`);
-    if (minutes > 0) parts.push(`${minutes}m`);
-
-    return parts.join(' ');
   }
 }
-

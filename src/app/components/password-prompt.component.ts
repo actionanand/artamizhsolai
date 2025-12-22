@@ -48,13 +48,21 @@ import { FormsModule } from '@angular/forms';
                   [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
                   tabindex="-1"
                 >
-                  {{ showPassword ? '👁️‍🗨️' : '👁️' }}
+                  @if (!showPassword) {
+                    <span>👁️</span>
+                  } @else {
+                    <span>🙈</span>
+                  }
                 </button>
               </div>
             </div>
 
             @if (errorMessage) {
             <div class="password-form__error">{{ errorMessage }}</div>
+            }
+
+            @if (successMessage) {
+            <div class="password-form__success">{{ successMessage }}</div>
             }
 
             <div class="password-form__actions">
@@ -175,7 +183,7 @@ import { FormsModule } from '@angular/forms';
     .password-form__input {
       width: 100%;
       padding: 0.75rem;
-      padding-right: 2.5rem;
+      padding-right: 2.75rem;
       border: 1px solid #d1d5db;
       border-radius: 6px;
       font-size: 1rem;
@@ -185,21 +193,31 @@ import { FormsModule } from '@angular/forms';
 
     .password-form__toggle {
       position: absolute;
-      right: 0.75rem;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 1.2rem;
-      padding: 0.25rem;
+      font-size: 1.1rem;
+      width: 32px;
+      height: 32px;
+      padding: 0;
       color: #6b7280;
       transition: color 0.2s ease;
       display: flex;
       align-items: center;
       justify-content: center;
+      outline: none;
+      flex-shrink: 0;
     }
 
     .password-form__toggle:hover {
       color: #374151;
+    }
+
+    .password-form__toggle:focus {
+      outline: none;
     }
 
     .password-form__input:focus {
@@ -216,6 +234,17 @@ import { FormsModule } from '@angular/forms';
       margin-bottom: 1rem;
       font-size: 0.9rem;
       border-left: 3px solid #dc2626;
+    }
+
+    .password-form__success {
+      background-color: #f0fdf4;
+      color: #16a34a;
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      border-left: 3px solid #16a34a;
+      font-weight: 500;
     }
 
     .password-form__actions {
@@ -267,17 +296,20 @@ export class PasswordPromptComponent {
 
   password = '';
   errorMessage = '';
+  successMessage = '';
   isLoading = false;
   showPassword = false;
 
   async onSubmit(): Promise<void> {
     if (!this.password.trim()) {
       this.errorMessage = 'Please enter a password';
+      this.successMessage = '';
       return;
     }
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.successMessage = '';
 
     // Small delay to prevent rapid submissions
     await new Promise((resolve) => setTimeout(resolve, 300));
@@ -289,6 +321,7 @@ export class PasswordPromptComponent {
   onClose(): void {
     this.password = '';
     this.errorMessage = '';
+    this.successMessage = '';
     this.close.emit();
   }
 
@@ -298,11 +331,18 @@ export class PasswordPromptComponent {
 
   setError(message: string): void {
     this.errorMessage = message;
+    this.successMessage = '';
+  }
+
+  setSuccess(message: string): void {
+    this.successMessage = message;
+    this.errorMessage = '';
   }
 
   resetForm(): void {
     this.password = '';
     this.errorMessage = '';
+    this.successMessage = '';
     this.isLoading = false;
     this.showPassword = false;
   }

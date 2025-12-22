@@ -671,11 +671,18 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
         this.headings = [];
         this.hasExtractedHeadings = false;
         
-        // Check if article is password protected
-        this.isArticleUnlocked = !post.attributes.enableLock || this.passwordService.isArticleUnlocked(this.currentSlug);
-        if (post.attributes.enableLock && !this.isArticleUnlocked) {
+        // Initialize password state - during SSR, we default to showing modal for locked articles
+        if (post.attributes.enableLock) {
+          // On server side, we show the locked message with modal
+          // On client side, ngAfterViewInit will check localStorage and update this
+          this.isArticleUnlocked = false;
           this.showPasswordPrompt = true;
+        } else {
+          this.isArticleUnlocked = true;
+          this.showPasswordPrompt = false;
         }
+        
+        this.cdr.detectChanges();
         
         // Setup footnote navigation after content is loaded
         if (this.isBrowser) {
@@ -693,6 +700,39 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
     if (this.isBrowser) {
       this.initObserver();
       this.setupFootnoteNavigation();
+
+      // PASSWORD CHECK: Only do this on client side to access localStorage
+      // During SSR, this doesn't run, so password checks happen here instead
+      if (this.currentPostAttributes?.enableLock) {
+        const lockedPassword = String(this.currentPostAttributes.lockedPassword || '').trim();
+        console.log('=== PASSWORD CHECK START (Client-side) ===');
+        console.log('Article slug:', this.currentPostAttributes.slug);
+        console.log('Expected hash:', lockedPassword);
+        
+        const storedDetails = this.passwordService.getStoredPasswordDetails();
+        console.log('Stored password details:', storedDetails);
+        
+        const isValid = this.passwordService.isPasswordValid(lockedPassword);
+        console.log('Is password valid:', isValid);
+        
+        if (isValid) {
+          console.log('Password is VALID - unlocking article');
+          this.isArticleUnlocked = true;
+          this.showPasswordPrompt = false;
+          
+          if (this.passwordPrompt) {
+            console.log('Resetting form and closing modal');
+            this.passwordPrompt.resetForm();
+          }
+        } else {
+          console.log('Password is INVALID - showing modal');
+          this.isArticleUnlocked = false;
+          this.showPasswordPrompt = true;
+        }
+        
+        console.log('=== PASSWORD CHECK END ===');
+        this.cdr.detectChanges();
+      }
     }
   }
 
@@ -857,18 +897,37 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
       return;
     }
 
-    const isCorrect = await this.passwordService.verifyPassword(password, this.currentPostAttributes.lockedPassword);
+    const lockedPasswordHash = String(this.currentPostAttributes.lockedPassword).trim();
+    
+    // Verify the password
+    const isCorrect = await this.passwordService.verifyPassword(password, lockedPasswordHash);
     
     if (isCorrect) {
-      // Password is correct, unlock the article
-      this.passwordService.unlockArticle(this.currentSlug);
+      console.log('Password correct! Storing password hash');
+      // Password is correct, save it with timestamp
+      this.passwordService.unlockArticle(lockedPasswordHash);
       this.isArticleUnlocked = true;
-      this.showPasswordPrompt = false;
-      this.cdr.detectChanges();
-    } else {
-      // Password is incorrect, show error
+      
+      // Show success message briefly then close
       if (this.passwordPrompt) {
-        this.passwordPrompt.setError('Incorrect password. Please try again.');
+        this.passwordPrompt.setSuccess('✓ Password verified! Access granted.');
+        // Auto-close after showing success message
+        setTimeout(() => {
+          this.showPasswordPrompt = false;
+          if (this.passwordPrompt) {
+            this.passwordPrompt.resetForm();
+          }
+          this.cdr.detectChanges();
+        }, 1000);
+      } else {
+        this.showPasswordPrompt = false;
+        this.cdr.detectChanges();
+      }
+    } else {
+      console.log('Password incorrect');
+      // Password is incorrect, show error only
+      if (this.passwordPrompt) {
+        this.passwordPrompt.setError('❌ Incorrect password. Please try again.');
       }
     }
   }
@@ -877,11 +936,8 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
    * Handle password prompt close
    */
   onPasswordPromptClose(): void {
-    if (!this.isArticleUnlocked) {
-      // User closed the dialog without unlocking
-      // Optionally redirect or show a message
-      this.showPasswordPrompt = false;
-    }
+    this.showPasswordPrompt = false;
+    this.cdr.detectChanges();
   }
 
   @ViewChild('passwordPrompt') passwordPrompt: PasswordPromptComponent | undefined;
