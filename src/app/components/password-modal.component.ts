@@ -183,10 +183,19 @@ import { AuthService } from '../services/auth.service';
       justify-content: center;
       border-radius: 6px;
       transition: background-color 0.2s;
+      outline: none;
     }
 
     .toggle-password-btn:hover {
       background-color: #f3f4f6;
+    }
+
+    .toggle-password-btn:focus {
+      outline: none;
+    }
+
+    .toggle-password-btn:active {
+      outline: none;
     }
 
     .error-message {

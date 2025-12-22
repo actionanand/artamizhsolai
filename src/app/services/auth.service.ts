@@ -11,9 +11,9 @@ interface PasswordCache {
 })
 export class AuthService {
   private readonly STORAGE_KEY = 'blog_auth_cache';
-  private readonly EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  private readonly EXPIRY_TIME = environment.expiryTime;
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Convert string to SHA-1 hash
