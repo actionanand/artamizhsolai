@@ -21,10 +21,12 @@ Display elegant quoted text with optional author attribution.
 ```
 
 **Features:**
-- Purple left border
+- Purple left border with decorative quote mark ("
 - Light purple gradient background
+- Large decorative quote symbol (3.5rem)
 - Italic text styling
 - Author attribution line
+- Professional typography
 
 ### 2. Verse Cards
 
@@ -100,7 +102,59 @@ Create highlighted cards with colored borders for important information.
 - Light tinted background
 - Clean, minimal design
 
-### 5. Generic Cards with Types
+### 5. Palm Leaf Manuscript Style (Olai Suvadi)
+
+Display ancient wisdom in traditional palm leaf manuscript style.
+
+**Syntax:** `::olai{text}` or `::olai[title]{text}`
+
+**Examples:**
+
+```markdown
+::olai{The ancient texts preserve timeless wisdom.}
+
+::olai[Rig Veda]{Truth is the foundation of the universe.}
+
+::olai[Tamil Sangam Literature]{In the days of old, great poets gathered to celebrate language and wisdom.}
+```
+
+**Features:**
+- Aged parchment color (#efe5d9)
+- Brown borders (#8b7355)
+- Wood texture effect
+- Serif typography (Georgia)
+- Centered text layout
+- Decorative border lines
+- Italic text for poetic effect
+- Authentic manuscript aesthetic
+
+### 6. Newspaper Style
+
+Present content in classic newspaper format.
+
+**Syntax:** `::newspaper{text}` or `::newspaper[headline]{text}`
+
+**Examples:**
+
+```markdown
+::newspaper{The story unfolds as important events are documented.}
+
+::newspaper[Breaking News]{Major discovery unveiled today.}
+
+::newspaper[Historical Records Found]{Ancient texts discovered after centuries.}
+```
+
+**Features:**
+- Classic newspaper styling
+- Bold headlines with uppercase letters
+- Serif typography (Georgia)
+- Multi-column layout
+- Text justification
+- Drop-cap first letter
+- Right border accent
+- Formal, professional appearance
+
+### 7. Generic Cards with Types
 
 Create cards with specific types and optional colors.
 
@@ -269,13 +323,16 @@ All cards automatically adapt to dark mode with:
 
 ### ✓ Do's
 
-1. **Use verse cards** for poetry and epic lines
-2. **Use quote cards** for attributable quotes
-3. **Use epic cards** for dramatic or highly significant content
-4. **Use highlight cards** for warnings and important notes
-5. **Use type cards** for structured information
-6. **Combine with text formatting** for emphasis
-7. **Test on mobile** to ensure readability
+1. **Use quote cards** with decorative quote marks for memorable statements
+2. **Use verse cards** for poetry and epic lines
+3. **Use quote cards** for attributable quotes
+4. **Use epic cards** for dramatic or highly significant content
+5. **Use olai cards** for displaying ancient wisdom and classical texts
+6. **Use newspaper cards** for formal announcements or news
+7. **Use highlight cards** for warnings and important notes
+8. **Use type cards** for structured information
+9. **Combine with text formatting** for emphasis
+10. **Test on mobile** to ensure readability
 
 ### ✗ Don'ts
 
@@ -319,12 +376,16 @@ All cards automatically adapt to dark mode with:
 ## Summary of Syntax
 
 ```
-::quote{text}                           - Simple quote
-::quote[author]{text}                   - Quote with author
+::quote{text}                           - Simple quote (with " mark)
+::quote[author]{text}                   - Quote with author (with " mark)
 ::verse{text}                           - Simple verse
 ::verse[source]{text}                   - Verse with source
 ::epic{text}                            - Simple epic
 ::epic[title]{text}                     - Epic with title
+::olai{text}                            - Palm leaf manuscript style
+::olai[title]{text}                     - Manuscript with title
+::newspaper{text}                       - Newspaper style
+::newspaper[headline]{text}             - Newspaper with headline
 ::highlight[color]{text}                - Highlighted paragraph
 ::card[info]{text}                      - Info card
 ::card[warning]{text}                   - Warning card

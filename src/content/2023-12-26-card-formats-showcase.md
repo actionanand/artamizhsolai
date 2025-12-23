@@ -79,6 +79,36 @@ Cards are the perfect way to make your blog post shine. Whether you're showcasin
 
 ::epic[The Iliad]{Sing, O Goddess, of the wrath of Achilles, and the countless sorrows it brought upon the Achaeans.}
 
+## Palm Leaf Manuscript Style (Olai Suvadi)
+
+Display traditional ancient wisdom in authentic palm leaf manuscript style.
+
+### Simple Olai Card
+
+::olai{The ancient texts were preserved on palm leaves, keeping wisdom alive through generations.}
+
+### Olai with Title
+
+::olai[Rig Veda]{Truth is the foundation of the universe. From truth comes order, and from order comes harmony.}
+
+::olai[Tamil Sangam Literature]{In the days of old, the great poets gathered to celebrate the richness of language and the depth of human experience.}
+
+::olai[Sacred Knowledge]{The knowledge of the ancients, carved upon palm leaves and passed through centuries, still guides us toward enlightenment.}
+
+## Newspaper Style
+
+Present content in classic newspaper format with elegant typography.
+
+### Simple Newspaper
+
+::newspaper{The story unfolds as reporters document the important events of our time, bringing truth to light.}
+
+### Newspaper with Headline
+
+::newspaper[Ancient Wisdom Resurfaces in Modern Times]{Scholars have discovered forgotten texts that provide new insights into ancient civilizations. The discoveries challenge our understanding of history and open new avenues for research. Experts believe these texts could revolutionize how we perceive the advancement of human knowledge and culture.}
+
+::newspaper[Manuscripts Preserved Through Ages]{The careful preservation of ancient manuscripts has allowed us to glimpse the wisdom of our ancestors. Through dedicated efforts, historians continue to uncover treasures that have been hidden for centuries, revealing the sophistication and depth of ancient knowledge systems.}
+
 ## Highlight Cards
 
 ### Yellow Highlight
@@ -258,6 +288,16 @@ All these cards maintain:
 - Add titles for context
 - Maximum visual impact for important declarations
 
+**For Palm Leaf Manuscripts:**
+- Use `::olai` for ancient wisdom and classical texts
+- Perfect for displaying traditional knowledge
+- Authentic parchment styling evokes antiquity
+
+**For Newspaper:**
+- Use `::newspaper` for news-style content
+- Include headlines for article titles
+- Classic typography for formal announcements
+
 **For Information:**
 - Use `::card[info]` for explanations
 - Use `::card[warning]` for cautions
@@ -292,6 +332,8 @@ Combine cards with your other formatting options:
 | Quote | `::quote[author]{text}` | Memorable statements |
 | Verse | `::verse[source]{text}` | Poetry & scriptures |
 | Epic | `::epic[title]{text}` | Dramatic content |
+| Olai (Palm Leaf) | `::olai[title]{text}` | Ancient wisdom |
+| Newspaper | `::newspaper[headline]{text}` | News-style content |
 | Highlight | `::highlight[color]{text}` | Important notes |
 | Info | `::card[info]{text}` | Explanations |
 | Warning | `::card[warning]{text}` | Cautions |

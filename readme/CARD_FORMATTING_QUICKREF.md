@@ -33,7 +33,21 @@ All card formats use the pattern: `::cardType[param]{content}`
 ```
 **Best for**: Important notes, warnings, special information
 
-### 5. Type Cards (Structured)
+### 5. Palm Leaf Manuscript Cards (Traditional)
+```markdown
+::olai{Ancient wisdom text}
+::olai[Title]{Ancient wisdom text}
+```
+**Best for**: Displaying traditional knowledge, classical texts, manuscript style
+
+### 6. Newspaper Cards (Formal)
+```markdown
+::newspaper{Article text}
+::newspaper[Headline]{Article text}
+```
+**Best for**: News-style content, formal announcements, article presentations
+
+### 7. Type Cards (Structured)
 ```markdown
 ::card[info]{Information text}
 ::card[warning]{Warning text}
@@ -59,6 +73,12 @@ All card formats use the pattern: `::cardType[param]{content}`
 ### Highlight
 ::highlight[yellow]{This is important information.}
 
+### Olai (Palm Leaf)
+::olai[Ancient Text]{Sacred wisdom preserved through ages.}
+
+### Newspaper
+::newspaper[Historic Discovery]{Important news announcement here.}
+
 ### Info Card
 ::card[info]{This provides helpful information.}
 
@@ -72,6 +92,10 @@ All card formats use the pattern: `::cardType[param]{content}`
 | Sourced Verse | `::verse[source]{text}` | `::verse[Scripture]{Sacred text}` |
 | Simple Epic | `::epic{text}` | `::epic{Epic line}` |
 | Titled Epic | `::epic[title]{text}` | `::epic[Epic Name]{Epic line}` |
+| Simple Olai | `::olai{text}` | `::olai{Manuscript text}` |
+| Titled Olai | `::olai[title]{text}` | `::olai[Title]{Manuscript text}` |
+| Simple Newspaper | `::newspaper{text}` | `::newspaper{Article text}` |
+| Newspaper Headline | `::newspaper[headline]{text}` | `::newspaper[News]{Article}` |
 | Highlighted | `::highlight[color]{text}` | `::highlight[blue]{Important}` |
 | Info | `::card[info]{text}` | `::card[info]{Information}` |
 | Warning | `::card[warning]{text}` | `::card[warning]{Be careful}` |

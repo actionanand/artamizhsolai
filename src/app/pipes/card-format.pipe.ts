@@ -30,6 +30,8 @@ export class CardFormatPipe implements PipeTransform {
     processed = this.processEpicCards(processed);
     processed = this.processHighlightCards(processed);
     processed = this.processGenericCards(processed);
+    processed = this.processOlaiCards(processed);
+    processed = this.processNewspaperCards(processed);
 
     return processed;
   }
@@ -43,6 +45,7 @@ export class CardFormatPipe implements PipeTransform {
     let processed = content.replace(withAuthorRegex, (match, author, text) => {
       const authorName = author.trim();
       return `<div class="card card--quote">
+  <div class="card__quote-mark">"</div>
   <div class="card__content">
     <p class="card__quote-text">${text}</p>
     <p class="card__quote-author">— ${authorName}</p>
@@ -54,6 +57,7 @@ export class CardFormatPipe implements PipeTransform {
     const noAuthorRegex = /::quote\{([^}]+)\}/g;
     processed = processed.replace(noAuthorRegex, (match, text) => {
       return `<div class="card card--quote">
+  <div class="card__quote-mark">"</div>
   <div class="card__content">
     <p class="card__quote-text">${text}</p>
   </div>
@@ -309,5 +313,78 @@ export class CardFormatPipe implements PipeTransform {
     }
     
     return 'default';
+  }
+
+  /**
+   * Process olai (palm leaf manuscript) cards: ::olai[title]{text}
+   */
+  private processOlaiCards(content: string): string {
+    // With title: ::olai[palm leaf title]{content}
+    const withTitleRegex = /::olai\[([^\]]+)\]\{([^}]+)\}/g;
+    let processed = content.replace(withTitleRegex, (match, title, text) => {
+      const olaiTitle = title.trim();
+      return `<div class="card card--olai">
+  <div class="card__olai-header">
+    <div class="card__olai-border-top"></div>
+    <h3 class="card__olai-title">${olaiTitle}</h3>
+    <div class="card__olai-border"></div>
+  </div>
+  <div class="card__olai-content">
+    <p class="card__olai-text">${text}</p>
+  </div>
+  <div class="card__olai-border-bottom"></div>
+</div>`;
+    });
+
+    // Without title: ::olai{text}
+    const noTitleRegex = /::olai\{([^}]+)\}/g;
+    processed = processed.replace(noTitleRegex, (match, text) => {
+      return `<div class="card card--olai">
+  <div class="card__olai-header">
+    <div class="card__olai-border-top"></div>
+  </div>
+  <div class="card__olai-content">
+    <p class="card__olai-text">${text}</p>
+  </div>
+  <div class="card__olai-border-bottom"></div>
+</div>`;
+    });
+
+    return processed;
+  }
+
+  /**
+   * Process newspaper cards: ::newspaper[headline]{text}
+   */
+  private processNewspaperCards(content: string): string {
+    // With headline: ::newspaper[headline text]{article text}
+    const withHeadlineRegex = /::newspaper\[([^\]]+)\]\{([^}]+)\}/g;
+    let processed = content.replace(withHeadlineRegex, (match, headline, text) => {
+      const headlineText = headline.trim();
+      return `<div class="card card--newspaper">
+  <div class="card__newspaper-header">
+    <h2 class="card__newspaper-headline">${headlineText}</h2>
+    <div class="card__newspaper-line"></div>
+  </div>
+  <div class="card__newspaper-content">
+    <p class="card__newspaper-text">${text}</p>
+  </div>
+</div>`;
+    });
+
+    // Without headline: ::newspaper{text}
+    const noHeadlineRegex = /::newspaper\{([^}]+)\}/g;
+    processed = processed.replace(noHeadlineRegex, (match, text) => {
+      return `<div class="card card--newspaper">
+  <div class="card__newspaper-header">
+    <div class="card__newspaper-line"></div>
+  </div>
+  <div class="card__newspaper-content">
+    <p class="card__newspaper-text">${text}</p>
+  </div>
+</div>`;
+    });
+
+    return processed;
   }
 }
