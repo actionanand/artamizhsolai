@@ -7,6 +7,9 @@
 /* Import table styling */
 @import './styles/tables.css';
 
+/* Import card styling */
+@import './styles/cards.css';
+
 /* Global Styles */
 :root {
   font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
