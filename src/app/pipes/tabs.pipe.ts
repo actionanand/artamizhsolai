@@ -57,17 +57,46 @@ export class TabsPipe implements PipeTransform {
 
   /**
    * Extract individual tabs from tabs content
+   * Uses brace balancing to handle nested braces in code blocks
    */
   private extractTabs(content: string): Array<{ title: string; content: string }> {
     const tabs: Array<{ title: string; content: string }> = [];
-    const tabRegex = /::tab\[([^\]]+)\]\{([^}]+)\}/g;
+    const tabRegex = /::tab\[([^\]]+)\]/g;
     
     let match;
+    let lastIndex = 0;
+
     while ((match = tabRegex.exec(content)) !== null) {
-      tabs.push({
-        title: match[1].trim(),
-        content: match[2].trim()
-      });
+      const title = match[1].trim();
+      const startIndex = match.index + match[0].length;
+
+      // Find matching closing brace using brace balancing
+      let braceCount = 0;
+      let contentStart = -1;
+      let contentEnd = -1;
+
+      for (let i = startIndex; i < content.length; i++) {
+        if (content[i] === '{') {
+          if (contentStart === -1) {
+            contentStart = i + 1;
+          }
+          braceCount++;
+        } else if (content[i] === '}') {
+          braceCount--;
+          if (braceCount === 0 && contentStart !== -1) {
+            contentEnd = i;
+            break;
+          }
+        }
+      }
+
+      if (contentStart !== -1 && contentEnd !== -1) {
+        tabs.push({
+          title: title,
+          content: content.substring(contentStart, contentEnd).trim()
+        });
+        lastIndex = contentEnd + 1;
+      }
     }
 
     return tabs;
@@ -118,11 +147,17 @@ export class TabsPipe implements PipeTransform {
   }
 
   /**
-   * Escape HTML special characters
+   * Escape HTML special characters without relying on document
    */
   private escapeHtml(text: string): string {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+    const htmlEscapeMap: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    };
+    
+    return text.replace(/[&<>"']/g, (char) => htmlEscapeMap[char] || char);
   }
 }

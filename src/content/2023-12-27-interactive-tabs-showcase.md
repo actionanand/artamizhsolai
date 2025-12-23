@@ -23,6 +23,7 @@ Tabs are perfect for organizing content that readers might want to compare or ch
 
 Here's a simple example of tabs in action:
 
+
 :::tabs
 ::tab[Overview]{Tabs help you organize related content in a compact, interactive format. Click on any tab to see its content.}
 ::tab[Benefits]{Tabs reduce scrolling, improve readability, and make it easy to compare different options side by side.}
@@ -32,6 +33,21 @@ Here's a simple example of tabs in action:
 ## Code Examples Across Languages
 
 One of the most common uses for tabs is showing the same functionality in different programming languages:
+
+:::tabs
+::tab[JavaScript]{
+```js
+const greeting = 'Hello, World!';
+console.log(greeting);
+```
+}
+::tab[Python]{
+```python
+greeting = 'Hello, World!'
+print(greeting)
+```
+}
+:::
 
 :::tabs
 ::tab[JavaScript]{const greeting = 'Hello, World!'; console.log(greeting); // Output: Hello, World!}
