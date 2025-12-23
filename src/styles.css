@@ -4,6 +4,9 @@
 /* Import text formatting styling */
 @import './styles/text-format.css';
 
+/* Import table styling */
+@import './styles/tables.css';
+
 /* Global Styles */
 :root {
   font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
