@@ -70,12 +70,27 @@
   text-decoration: none;
   position: relative;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: visible;
+}
+
+/* Ensure button and link styles are consistent */
+.donation-platform.redirect-platform {
+  color: inherit;
+}
+
+.donation-platform.qr-platform {
+  background: white;
+  border: 2px solid #e9ecef;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .donation-platform:hover {
   border-color: #007bff;
   transform: translateY(-3px);
   box-shadow: 0 6px 12px rgba(0, 123, 255, 0.15);
+  text-decoration: none;
+  color: inherit;
 }
 
 .platform-name {
@@ -134,46 +149,90 @@
   color: #ff424d;
 }
 
-/* QR Tooltip Styles */
-.qr-tooltip {
+/* QR Modal Styles */
+.qr-modal-overlay {
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
+  padding: 20px;
+}
+
+.qr-modal {
   background: white;
-  border: 2px solid #dee2e6;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  padding: 1rem;
-  min-width: 200px;
-  max-width: 280px;
-  pointer-events: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-.qr-content {
-  text-align: center;
+.qr-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 0 1.5rem;
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 1rem;
 }
 
-.qr-instructions {
-  margin: 0 0 0.75rem 0;
-  font-size: 0.9rem;
+.qr-modal-header h4 {
+  margin: 0;
   color: #495057;
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.qr-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #6c757d;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.qr-close-btn:hover {
+  background: #f8f9fa;
+  color: #495057;
+}
+
+.qr-modal-content {
+  padding: 0 1.5rem 1.5rem 1.5rem;
 }
 
 .qr-image-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
+  text-align: center;
 }
 
 .qr-image {
-  max-width: 180px;
-  max-height: 180px;
+  max-width: 200px;
+  max-height: 200px;
   width: auto;
   height: auto;
   border-radius: 8px;
   border: 1px solid #dee2e6;
   background: white;
+  display: block;
+  margin: 0 auto;
 }
 
 .qr-upi-id {
@@ -181,15 +240,22 @@
 }
 
 .qr-upi-id p {
-  margin: 0;
-  font-size: 0.85rem;
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
   color: #495057;
   font-family: monospace;
   background: #f8f9fa;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   border: 1px solid #dee2e6;
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.qr-upi-id small {
+  color: #6c757d;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .qr-code-placeholder {
@@ -241,17 +307,22 @@
     font-size: 0.85rem;
   }
 
-  .qr-tooltip {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    top: auto !important;
-    left: 20px !important;
-    right: 20px !important;
-    transform: none !important;
-    max-width: none;
-    width: calc(100vw - 40px);
+  .qr-modal {
+    margin: 10px;
+    max-width: calc(100vw - 20px);
+  }
+
+  .qr-modal-header {
+    padding: 1rem;
+  }
+
+  .qr-modal-content {
+    padding: 0 1rem 1rem 1rem;
+  }
+
+  .qr-image {
+    max-width: 160px;
+    max-height: 160px;
   }
 }
 
@@ -307,12 +378,24 @@
     color: #63b3ed;
   }
 
-  .qr-tooltip {
+  .qr-modal {
     background: #2d3748;
+  }
+
+  .qr-modal-header {
     border-color: #4a5568;
   }
 
-  .qr-instructions {
+  .qr-modal-header h4 {
+    color: #e2e8f0;
+  }
+
+  .qr-close-btn {
+    color: #a0aec0;
+  }
+
+  .qr-close-btn:hover {
+    background: #4a5568;
     color: #e2e8f0;
   }
 
@@ -327,18 +410,7 @@
     border-color: #4a5568;
   }
 
-  .qr-code-placeholder {
-    background: #1a202c;
-    border-color: #4a5568;
-  }
-
-  .qr-code-placeholder i {
+  .qr-upi-id small {
     color: #a0aec0;
-  }
-
-  .qr-code-placeholder p {
-    color: #e2e8f0;
-    background: #2d3748;
-    border-color: #4a5568;
   }
 }

@@ -18,37 +18,53 @@ import PostAttributes from '../post-attributes';
         </div>
         
         <div class="donation-platforms">
-          <div 
-            *ngFor="let platform of enabledPlatforms" 
-            class="donation-platform"
-            [class.qr-platform]="platform.type === 'qr'"
-            (click)="handleDonationClick(platform)"
-            (mouseenter)="showQrTooltip(platform, $event)"
-            (mouseleave)="hideQrTooltip()"
+          <!-- External link platforms -->
+          <a 
+            *ngFor="let platform of redirectPlatforms"
+            [href]="platform.url" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="donation-platform redirect-platform"
             [title]="platform.description"
           >
             <span class="platform-name">{{ platform.name }}</span>
-            
-            <!-- QR Code Tooltip -->
-            <div 
-              *ngIf="showQrPopup && selectedPlatform?.name === platform.name && platform.type === 'qr'"
-              class="qr-tooltip"
-              [style.left.px]="tooltipPosition.x"
-              [style.top.px]="tooltipPosition.y"
-            >
-              <div class="qr-content">
-                <p class="qr-instructions">Scan to pay via UPI</p>
-                <div class="qr-image-container">
-                  <img 
-                    *ngIf="platform.qrImage" 
-                    [src]="getQrImagePath(platform.qrImage)"
-                    [alt]="'QR code for ' + platform.name"
-                    class="qr-image"
-                  />
-                  <div class="qr-upi-id">
-                    <p>{{ getUpiId(platform.qrData) }}</p>
-                  </div>
-                </div>
+          </a>
+          
+          <!-- QR code platforms -->
+          <button
+            *ngFor="let platform of qrPlatforms"
+            type="button"
+            class="donation-platform qr-platform"
+            [title]="platform.description"
+            (click)="toggleQrModal(platform)"
+          >
+            <span class="platform-name">{{ platform.name }}</span>
+          </button>
+        </div>
+      </div>
+      
+      <!-- QR Modal Overlay -->
+      <div 
+        *ngIf="showQrModal" 
+        class="qr-modal-overlay"
+        (click)="closeQrModal()"
+      >
+        <div class="qr-modal" (click)="$event.stopPropagation()">
+          <div class="qr-modal-header">
+            <h4>Scan to Pay via UPI</h4>
+            <button class="qr-close-btn" (click)="closeQrModal()">&times;</button>
+          </div>
+          <div class="qr-modal-content">
+            <div class="qr-image-container" *ngIf="selectedPlatform">
+              <img 
+                *ngIf="selectedPlatform.qrImage" 
+                [src]="getQrImagePath(selectedPlatform.qrImage)"
+                [alt]="'QR code for ' + selectedPlatform.name"
+                class="qr-image"
+              />
+              <div class="qr-upi-id">
+                <p>{{ getUpiId(selectedPlatform.qrData) }}</p>
+                <small>UPI ID</small>
               </div>
             </div>
           </div>
@@ -63,12 +79,15 @@ export class DonationComponent implements OnInit {
   
   donationConfig = donationConfig;
   enabledPlatforms: DonationPlatform[] = [];
-  showQrPopup = false;
+  redirectPlatforms: DonationPlatform[] = [];
+  qrPlatforms: DonationPlatform[] = [];
+  showQrModal = false;
   selectedPlatform: DonationPlatform | null = null;
-  tooltipPosition = { x: 0, y: 0 };
 
   ngOnInit() {
     this.enabledPlatforms = donationPlatforms.filter(platform => platform.enabled);
+    this.redirectPlatforms = this.enabledPlatforms.filter(platform => platform.type === 'redirect');
+    this.qrPlatforms = this.enabledPlatforms.filter(platform => platform.type === 'qr');
   }
 
   get shouldShowDonation(): boolean {
@@ -99,46 +118,16 @@ export class DonationComponent implements OnInit {
     return (this.postAttributes as PostAttributes)[key];
   }
 
-  handleDonationClick(platform: DonationPlatform) {
-    console.log('Donation click:', platform.name, platform.type, platform.url);
-    
-    if (platform.type === 'redirect') {
-      // Open external link in new tab
-      if (platform.url) {
-        window.open(platform.url, '_blank', 'noopener,noreferrer');
-      } else {
-        console.warn('No URL provided for redirect platform:', platform.name);
-      }
-    } else if (platform.type === 'qr') {
-      // For QR codes, toggle tooltip visibility
-      this.showQrPopup = !this.showQrPopup;
-      this.selectedPlatform = this.showQrPopup ? platform : null;
-      console.log('QR popup state:', this.showQrPopup, this.selectedPlatform?.name);
-    }
+  toggleQrModal(platform: DonationPlatform): void {
+    console.log('Opening QR modal for:', platform.name);
+    this.selectedPlatform = platform;
+    this.showQrModal = true;
   }
 
-  showQrTooltip(platform: DonationPlatform, event: MouseEvent) {
-    if (platform.type === 'qr') {
-      this.showQrPopup = true;
-      this.selectedPlatform = platform;
-      this.tooltipPosition = {
-        x: event.clientX - 100, // Center tooltip better
-        y: event.clientY - 150  // Position above cursor
-      };
-      console.log('Showing QR tooltip for:', platform.name);
-    }
-  }
-
-  hideQrTooltip() {
-    // Only hide if not clicked (clicked state is managed by handleDonationClick)
-    setTimeout(() => {
-      if (this.selectedPlatform && this.showQrPopup) {
-        // Don't auto-hide if tooltip was clicked to stay visible
-        return;
-      }
-      this.showQrPopup = false;
-      this.selectedPlatform = null;
-    }, 300);
+  closeQrModal(): void {
+    console.log('Closing QR modal');
+    this.showQrModal = false;
+    this.selectedPlatform = null;
   }
 
   getDonationMessage(): string {
