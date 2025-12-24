@@ -21,4 +21,5 @@ export default interface PostAttributes {
   enableLock?: boolean;
   // Donation settings
   enableDonation?: boolean;
+  donationMessage?: string;
 }

@@ -12,8 +12,8 @@ import PostAttributes from '../post-attributes';
       <div class="donation-container">
         <div class="donation-header">
           <h3 class="donation-title">{{ donationConfig.sectionTitle }}</h3>
-          <p class="donation-message" *ngIf="donationConfig.message">
-            {{ donationConfig.message }}
+          <p class="donation-message" *ngIf="getDonationMessage()">
+            {{ getDonationMessage() }}
           </p>
         </div>
         
@@ -27,9 +27,6 @@ import PostAttributes from '../post-attributes';
             (mouseleave)="hideQrTooltip()"
             [title]="platform.description"
           >
-            <div class="platform-icon">
-              <i [class]="getPlatformIconClass(platform.icon)"></i>
-            </div>
             <span class="platform-name">{{ platform.name }}</span>
             
             <!-- QR Code Tooltip -->
@@ -103,13 +100,20 @@ export class DonationComponent implements OnInit {
   }
 
   handleDonationClick(platform: DonationPlatform) {
+    console.log('Donation click:', platform.name, platform.type, platform.url);
+    
     if (platform.type === 'redirect') {
       // Open external link in new tab
-      window.open(platform.url, '_blank', 'noopener,noreferrer');
+      if (platform.url) {
+        window.open(platform.url, '_blank', 'noopener,noreferrer');
+      } else {
+        console.warn('No URL provided for redirect platform:', platform.name);
+      }
     } else if (platform.type === 'qr') {
-      // For QR codes, show tooltip on click for mobile users
+      // For QR codes, toggle tooltip visibility
       this.showQrPopup = !this.showQrPopup;
-      this.selectedPlatform = platform;
+      this.selectedPlatform = this.showQrPopup ? platform : null;
+      console.log('QR popup state:', this.showQrPopup, this.selectedPlatform?.name);
     }
   }
 
@@ -118,30 +122,29 @@ export class DonationComponent implements OnInit {
       this.showQrPopup = true;
       this.selectedPlatform = platform;
       this.tooltipPosition = {
-        x: event.clientX + 10,
-        y: event.clientY - 100
+        x: event.clientX - 100, // Center tooltip better
+        y: event.clientY - 150  // Position above cursor
       };
+      console.log('Showing QR tooltip for:', platform.name);
     }
   }
 
   hideQrTooltip() {
+    // Only hide if not clicked (clicked state is managed by handleDonationClick)
     setTimeout(() => {
+      if (this.selectedPlatform && this.showQrPopup) {
+        // Don't auto-hide if tooltip was clicked to stay visible
+        return;
+      }
       this.showQrPopup = false;
       this.selectedPlatform = null;
-    }, 200); // Small delay to allow hovering over tooltip
+    }, 300);
   }
 
-  getPlatformIconClass(iconName: string): string {
-    const iconMap: { [key: string]: string } = {
-      'gpay': 'fab fa-google-pay',
-      'paypal': 'fab fa-paypal',
-      'buymeacoffee': 'fas fa-coffee',
-      'github-sponsors': 'fab fa-github',
-      'patreon': 'fab fa-patreon',
-      'kofi': 'fas fa-mug-hot'
-    };
-    
-    return iconMap[iconName] || 'fas fa-heart';
+  getDonationMessage(): string {
+    // Check if post has a custom donation message
+    const customMessage = this.getPostAttribute('donationMessage');
+    return customMessage || donationConfig.message || '';
   }
 
   getUpiId(qrData: string | undefined): string {
