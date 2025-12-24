@@ -123,7 +123,7 @@ import { AuthService } from '../../services/auth.service';
       }
 
       <!-- Donation Section -->
-      <app-donation [postAttributes]="post.attributes" ngSkipHydration></app-donation>
+      <app-donation [postAttributes]="post.attributes"></app-donation>
 
       <section class="blog-post__related">
         @if (relatedPosts.length > 0) {

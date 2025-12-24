@@ -41,7 +41,7 @@ export const donationPlatforms: DonationPlatform[] = [
     icon: 'gpay',
     enabled: true,
     type: 'qr',
-    qrData: 'upi://pay?pa=anand@oksbi&pn=Anand&am=&cu=INR&tn=Support%20Blog',
+    qrData: 'upi://pay?pa=anandns@oksbi&pn=Anand&am=&cu=INR&tn=Support%20Blog',
     qrImage: 'gpay-anand.png',
     description: 'Pay via UPI using Google Pay or any UPI app'
   },
