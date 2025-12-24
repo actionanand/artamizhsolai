@@ -2,7 +2,6 @@
 title: "Introducing Donation Support: Help Support Quality Content"
 slug: "donation-feature-introduction"
 description: "Learn about the new donation feature that allows readers to support content creators through multiple payment platforms including GPay, PayPal, and more."
-coverImage: "https://via.placeholder.com/800x400/1976d2/ffffff?text=Donation+Feature"
 date: "2024-12-24"
 category: "announcement"
 tags: ["feature", "donations", "support", "monetization"]
