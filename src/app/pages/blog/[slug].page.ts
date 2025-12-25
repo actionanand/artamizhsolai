@@ -14,6 +14,7 @@ import { ProcessFootnotesPipe } from '../../pipes/process-footnotes.pipe';
 import { TextFormatPipe } from '../../pipes/text-format.pipe';
 import { CardFormatPipe } from '../../pipes/card-format.pipe';
 import { TabsPipe } from '../../pipes/tabs.pipe';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import { PasswordModalComponent } from '../../components/password-modal.component';
 import { DonationComponent } from '../../components/donation.component';
 import { AuthService } from '../../services/auth.service';
@@ -32,6 +33,7 @@ import { AuthService } from '../../services/auth.service';
     TextFormatPipe,
     CardFormatPipe,
     TabsPipe,
+    FormatDatePipe,
     PasswordModalComponent,
     DonationComponent,
   ],
@@ -44,7 +46,7 @@ import { AuthService } from '../../services/auth.service';
       <header class="blog-post__header">
         <h1 class="blog-post__title">{{ post.attributes.title }}</h1>
         @if (post.attributes.date) {
-        <p class="blog-post__date">{{ post.attributes.date }}</p>
+        <p class="blog-post__date">{{ post.attributes.date | formatDate }}</p>
         }
         <div class="blog-post__meta">
           @if (post.attributes.isDraft) {
@@ -142,7 +144,7 @@ import { AuthService } from '../../services/auth.service';
               <div class="post-info">
                 <a [routerLink]="['/blog', p.attributes.slug]" class="post-link">{{ p.attributes.title }}</a>
                 @if (p.attributes.date) {
-                <span class="post-date">{{ p.attributes.date }}</span>
+                <span class="post-date">{{ p.attributes.date | formatDate }}</span>
                 }
               </div>
             </li>
@@ -166,7 +168,7 @@ import { AuthService } from '../../services/auth.service';
               <div class="post-info">
                 <a [routerLink]="['/blog', p.attributes.slug]" class="post-link">{{ p.attributes.title }}</a>
                 @if (p.attributes.date) {
-                <span class="post-date">{{ p.attributes.date }}</span>
+                <span class="post-date">{{ p.attributes.date | formatDate }}</span>
                 }
               </div>
             </li>

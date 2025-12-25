@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { injectContentFiles } from '@analogjs/content';
 import { paginationConfig } from '../config/pagination-config';
+import { FormatDatePipe } from '../pipes/format-date.pipe';
 import PostAttributes from '../post-attributes';
 
 const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
@@ -9,7 +10,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, FormatDatePipe],
   template: `
     <section class="hero">
       <h1 class="hero__title">Welcome to AR தமிழ் சோலை</h1>
@@ -36,7 +37,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
             }
             <h3 class="post-card__title">{{ post.attributes.title }}</h3>
             @if (post.attributes.date) {
-            <p class="post-card__date">{{ post.attributes.date }}</p>
+            <p class="post-card__date">{{ post.attributes.date | formatDate }}</p>
             }
             <p class="post-card__description">{{ post.attributes.description }}</p>
             <a 
