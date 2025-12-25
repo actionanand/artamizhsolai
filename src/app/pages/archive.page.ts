@@ -3,12 +3,13 @@ import { RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { injectContentFiles } from '@analogjs/content';
 import { paginationConfig } from '../config/pagination-config';
+import { FormatDatePipe } from '../pipes/format-date.pipe';
 import PostAttributes from '../post-attributes';
 
 @Component({
   selector: 'app-archive',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, FormatDatePipe],
   template: `
     <div class="year-archive">
       <header class="archive-header">
@@ -83,7 +84,7 @@ import PostAttributes from '../post-attributes';
                 {{ post.attributes.title }}
               </a>
               @if (post.attributes.date) {
-              <span class="archive-year__date">— {{ post.attributes.date }}</span>
+              <span class="archive-year__date">— {{ post.attributes.date | formatDate }}</span>
               }
               <div class="archive-year__meta">
                 @if (post.attributes.isDraft) {

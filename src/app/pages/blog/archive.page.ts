@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { injectContentFiles } from '@analogjs/content';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import PostAttributes from '../../post-attributes';
 
 @Component({
   selector: 'app-blog-archive',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule, FormatDatePipe],
   template: `
     <div class="year-archive">
       <header class="archive-header">
@@ -24,7 +26,7 @@ import PostAttributes from '../../post-attributes';
               {{ post.attributes.title }}
             </a>
             @if (post.attributes.date) {
-            <span class="archive-year__date">— {{ post.attributes.date }}</span>
+            <span class="archive-year__date">— {{ post.attributes.date | formatDate }}</span>
             }
           </li>
           }
