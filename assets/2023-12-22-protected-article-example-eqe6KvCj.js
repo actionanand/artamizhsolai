@@ -51,23 +51,23 @@ isPinned: true
 </ol>
 <h2 id="default-credentials">Default Credentials</h2>
 <p>For testing purposes, the default password is: <code>password123</code></p><p><strong>Remember to change this in production!</strong></p><h2 id="code-example">Code Example</h2>
-<p>Here&#39;s how to protect your own blog posts:</p><pre class="shiki github-dark" style="background-color:#24292e;color:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#F97583">---</span></span>
-<span class="line"><span style="color:#B392F0">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"My Secret Post"</span></span>
-<span class="line"><span style="color:#B392F0">slug</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"my-secret-post"</span></span>
-<span class="line"><span style="color:#B392F0">description</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"This post is protected"</span></span>
-<span class="line"><span style="color:#B392F0">enableLock</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
-<span class="line"><span style="color:#F97583">---</span></span>
+<p>Here&#39;s how to protect your own blog posts:</p><pre class="shiki ayu-dark" style="background-color:#0b0e14;color:#bfbdb6" tabindex="0"><code><span class="line"><span style="color:#F29668">---</span></span>
+<span class="line"><span style="color:#59C2FF">title</span><span style="color:#BFBDB6B3">:</span><span style="color:#AAD94C"> "My Secret Post"</span></span>
+<span class="line"><span style="color:#59C2FF">slug</span><span style="color:#BFBDB6B3">:</span><span style="color:#AAD94C"> "my-secret-post"</span></span>
+<span class="line"><span style="color:#59C2FF">description</span><span style="color:#BFBDB6B3">:</span><span style="color:#AAD94C"> "This post is protected"</span></span>
+<span class="line"><span style="color:#59C2FF">enableLock</span><span style="color:#BFBDB6B3">:</span><span style="color:#D2A6FF"> true</span></span>
+<span class="line"><span style="color:#F29668">---</span></span>
 <span class="line"></span>
-<span class="line"><span style="color:#E1E4E8">Your protected content here</span><span style="color:#F97583">...</span></span></code></pre>
+<span class="line"><span style="color:#BFBDB6">Your protected content here</span><span style="color:#F29668">...</span></span></code></pre>
 <h2 id="advanced-features">Advanced Features</h2>
 <h3 id="password-expiration">Password Expiration</h3>
-<p>The authentication cache expires after 24 hours. You can customize this duration in the AuthService:</p><pre class="shiki github-dark" style="background-color:#24292e;color:#e1e4e8" tabindex="0"><code><span class="line"><span style="color:#E1E4E8">private readonly </span><span style="color:#79B8FF">EXPIRY_TIME</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 24</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 60</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 60</span><span style="color:#F97583"> *</span><span style="color:#79B8FF"> 1000</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// milliseconds</span></span></code></pre>
+<p>The authentication cache expires after 24 hours. You can customize this duration in the AuthService:</p><pre class="shiki ayu-dark" style="background-color:#0b0e14;color:#bfbdb6" tabindex="0"><code><span class="line"><span style="color:#BFBDB6">private readonly EXPIRY_TIME </span><span style="color:#F29668">=</span><span style="color:#D2A6FF"> 24</span><span style="color:#F29668"> *</span><span style="color:#D2A6FF"> 60</span><span style="color:#F29668"> *</span><span style="color:#D2A6FF"> 60</span><span style="color:#F29668"> *</span><span style="color:#D2A6FF"> 1000</span><span style="color:#BFBDB6B3">;</span><span style="color:#ACB6BF8C;font-style:italic"> // milliseconds</span></span></code></pre>
 <h3 id="clear-cache-manually">Clear Cache Manually</h3>
 <p>Users can manually clear their authentication by:</p><ol>
 <li>Opening browser Developer Tools (F12)</li>
 <li>Going to Application/Storage → Local Storage</li>
 <li>Removing the <code>blog_auth_cache</code> item</li>
 </ol>
-<h2 id="conclusion">Conclusion</h2>
+<h2 id="conclusion-1">Conclusion</h2>
 <p>This password protection system provides a simple, effective way to control access to your blog content without requiring a backend server or database. It&#39;s perfect for small-scale content protection needs.</p><p>For more details, check the documentation at <code>readme/PASSWORD_PROTECTION.md</code>.</p><hr>
 <p><strong>Note</strong>: This article itself is password-protected. If you can read this, the system is working correctly!</p>`;export{e as default};
