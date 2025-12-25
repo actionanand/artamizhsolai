@@ -106,7 +106,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
     }
 
     .hero {
-      background: linear-gradient(135deg, #0a3d62 0%, #1a5c7a 25%, #2a7f9e 50%, #16a085 75%, #138d75 100%);
+      background: linear-gradient(135deg, #0a3d62 0%, #1a5c7a 20%, #2a7f9e 40%, #16a085 70%, #138d75 100%);
       padding: 4rem 2rem;
       border-radius: 15px;
       margin-bottom: 4rem;
@@ -117,13 +117,25 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
     .hero::before {
       content: '';
       position: absolute;
-      top: -50%;
-      right: -50%;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle, rgba(76, 175, 80, 0.1) 0%, transparent 70%);
-      animation: pulse-glow 3s ease-in-out infinite;
+      background: radial-gradient(circle at 80% 20%, rgba(76, 175, 80, 0.15) 0%, transparent 50%);
       pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .hero__container {
@@ -205,8 +217,13 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
       font-size: 2.8rem;
       font-weight: 800;
       margin: 0 0 1rem 0;
-      line-height: 1.2;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      line-height: 1.3;
+      text-shadow: 0 3px 15px rgba(0, 0, 0, 0.5);
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .hero__subtitle {
@@ -352,43 +369,113 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
 
       .hero__container {
         flex-direction: column;
-        gap: 2rem;
+        gap: 1.5rem;
       }
 
       .murugan-showcase {
-        flex: 0 0 250px;
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
         min-height: 280px;
       }
 
       .murugan-circle-bg {
-        width: 220px;
-        height: 220px;
+        width: 200px;
+        height: 200px;
       }
 
       .tamil-letters-circle {
-        width: 260px;
-        height: 260px;
+        width: 240px;
+        height: 240px;
+        margin-left: -120px;
+        margin-top: -120px;
+        animation: rotate-circle 25s linear infinite;
+      }
+
+      .letter {
+        font-size: 1.4rem;
+        width: 32px;
+        height: 32px;
+        margin-left: -16px;
+        margin-top: -16px;
+        transform: rotate(var(--angle)) translateY(-120px) rotateZ(calc(var(--angle) * -1));
       }
 
       .murugan-image {
-        width: 180px;
-        height: 180px;
+        width: 160px;
+        height: 160px;
+        animation: bounce-murugan 2.5s ease-in-out infinite;
       }
 
       .hero__content {
         text-align: center;
+        width: 100%;
       }
 
       .hero__title {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        letter-spacing: 0.3px;
       }
 
       .hero__subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
       }
 
       .posts-grid {
         grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 1.5rem 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .murugan-showcase {
+        min-height: 250px;
+        max-width: 250px;
+      }
+
+      .murugan-circle-bg {
+        width: 180px;
+        height: 180px;
+      }
+
+      .tamil-letters-circle {
+        width: 220px;
+        height: 220px;
+        margin-left: -110px;
+        margin-top: -110px;
+        animation: rotate-circle 28s linear infinite;
+      }
+
+      .letter {
+        font-size: 1.2rem;
+        width: 28px;
+        height: 28px;
+        margin-left: -14px;
+        margin-top: -14px;
+        transform: rotate(var(--angle)) translateY(-110px) rotateZ(calc(var(--angle) * -1));
+      }
+
+      .murugan-image {
+        width: 140px;
+        height: 140px;
+      }
+
+      .hero__title {
+        font-size: 1.4rem;
+      }
+
+      .hero__subtitle {
+        font-size: 0.85rem;
+      }
+
+      .hero__cta {
+        padding: 0.7rem 1.8rem;
+        font-size: 0.9rem;
       }
     }
   `,
