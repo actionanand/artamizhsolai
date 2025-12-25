@@ -37,7 +37,7 @@ export class AuthService {
    */
   async validatePassword(password: string): Promise<boolean> {
     const hash = await this.sha1(password);
-    return hash === environment.passwordHash;
+    return hash === import.meta.env['PASSWORD_HASH'] || hash === environment.passwordHash;
   }
 
   /**
