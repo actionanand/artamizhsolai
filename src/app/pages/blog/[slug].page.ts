@@ -11,7 +11,12 @@ import { TableOfContentsComponent } from '../../components/table-of-contents.com
 import { PostNavigationComponent } from '../../components/post-navigation.component';
 import { AdmonitionTransformPipe } from '../../pipes/admonition-transform.pipe';
 import { ProcessFootnotesPipe } from '../../pipes/process-footnotes.pipe';
+import { TextFormatPipe } from '../../pipes/text-format.pipe';
+import { CardFormatPipe } from '../../pipes/card-format.pipe';
+import { TabsPipe } from '../../pipes/tabs.pipe';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
 import { PasswordModalComponent } from '../../components/password-modal.component';
+import { DonationComponent } from '../../components/donation.component';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -25,7 +30,12 @@ import { AuthService } from '../../services/auth.service';
     PostNavigationComponent,
     AdmonitionTransformPipe,
     ProcessFootnotesPipe,
+    TextFormatPipe,
+    CardFormatPipe,
+    TabsPipe,
+    FormatDatePipe,
     PasswordModalComponent,
+    DonationComponent,
   ],
   template: `
     <app-password-modal></app-password-modal>
@@ -36,7 +46,7 @@ import { AuthService } from '../../services/auth.service';
       <header class="blog-post__header">
         <h1 class="blog-post__title">{{ post.attributes.title }}</h1>
         @if (post.attributes.date) {
-        <p class="blog-post__date">{{ post.attributes.date }}</p>
+        <p class="blog-post__date">{{ post.attributes.date | formatDate }}</p>
         }
         <div class="blog-post__meta">
           @if (post.attributes.isDraft) {
@@ -95,7 +105,7 @@ import { AuthService } from '../../services/auth.service';
 
         <div class="blog-post__content" #contentRef>
           @if (post.content) {
-          <analog-markdown [content]="(typeof post.content === 'string' ? post.content : '') | processFootnotes | admonitionTransform" />
+          <analog-markdown [content]="(typeof post.content === 'string' ? post.content : '') | processFootnotes | admonitionTransform | textFormat | cardFormat | tabs" />
           }
         </div>
       </div>
@@ -114,6 +124,9 @@ import { AuthService } from '../../services/auth.service';
       </section>
       }
 
+      <!-- Donation Section -->
+      <app-donation [postAttributes]="post.attributes"></app-donation>
+
       <section class="blog-post__related">
         @if (relatedPosts.length > 0) {
         <div class="related-posts">
@@ -131,7 +144,7 @@ import { AuthService } from '../../services/auth.service';
               <div class="post-info">
                 <a [routerLink]="['/blog', p.attributes.slug]" class="post-link">{{ p.attributes.title }}</a>
                 @if (p.attributes.date) {
-                <span class="post-date">{{ p.attributes.date }}</span>
+                <span class="post-date">{{ p.attributes.date | formatDate }}</span>
                 }
               </div>
             </li>
@@ -155,7 +168,7 @@ import { AuthService } from '../../services/auth.service';
               <div class="post-info">
                 <a [routerLink]="['/blog', p.attributes.slug]" class="post-link">{{ p.attributes.title }}</a>
                 @if (p.attributes.date) {
-                <span class="post-date">{{ p.attributes.date }}</span>
+                <span class="post-date">{{ p.attributes.date | formatDate }}</span>
                 }
               </div>
             </li>
@@ -653,7 +666,8 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
         this.disclaimerText = post.attributes.disclaimerText || this.disclaimerText;
         this.updateNavigation();
         this.updateRelatedPosts(post.attributes.relatedPosts);
-        // Fetch one extra post to account for filtering out current post in template
+        // Fetch enough posts to show articleRecentPostsCount after filtering out current post
+        // We fetch count + 1 to account for excluding the current slug in the template
         this.recentPosts = this.allPosts.slice(0, paginationConfig.articleRecentPostsCount + 1);
         // Reset TOC state when navigating to a new post
         this.headings = [];

@@ -1,6 +1,18 @@
 /* Import footnotes styling */
 @import './styles/footnotes.css';
 
+/* Import text formatting styling */
+@import './styles/text-format.css';
+
+/* Import table styling */
+@import './styles/tables.css';
+
+/* Import card styling */
+@import './styles/cards.css';
+
+/* Import tabs styling */
+@import './styles/tabs.css';
+
 /* Global Styles */
 :root {
   font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
@@ -171,7 +183,7 @@ button:hover {
 }
 
 button:hover {
-  border-color: #646cff;
+  /* border-color: #646cff; */
 }
 button:focus,
 button:focus-visible {

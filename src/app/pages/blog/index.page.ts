@@ -3,6 +3,7 @@ import { RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { injectContentFiles } from '@analogjs/content';
 import { paginationConfig } from '../../config/pagination-config';
+import { FormatDatePipe } from '../../pipes/format-date.pipe';
 
 import PostAttributes from '../../post-attributes';
 
@@ -10,7 +11,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
 
 @Component({
   selector: 'app-blog',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, FormatDatePipe],
   template: `
     <div class="blog-archive">
       <header class="archive-header">
@@ -115,7 +116,7 @@ const DEFAULT_COVER_IMAGE = 'tamil-literature-default.svg';
               </a>
             </h2>
             @if (post.attributes.date) {
-            <p class="post-preview__date">{{ post.attributes.date }}</p>
+            <p class="post-preview__date">{{ post.attributes.date | formatDate }}</p>
             }
             <div class="post-preview__meta">
               @if (post.attributes.isDraft) {

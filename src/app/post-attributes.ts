@@ -19,4 +19,7 @@ export default interface PostAttributes {
   articleMetadata?: string;
   // Password protection
   enableLock?: boolean;
+  // Donation settings
+  enableDonation?: boolean;
+  donationMessage?: string;
 }

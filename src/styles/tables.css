@@ -1,0 +1,219 @@
+/* Markdown Table Styles */
+
+/* Table container - allows horizontal scroll on small screens */
+.blog-post__content table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  display: table;
+  font-size: 0.95rem;
+}
+
+/* Table wrapper for responsive scrolling */
+.blog-post__content {
+  overflow-x: auto;
+}
+
+/* Table header */
+.blog-post__content table thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.blog-post__content table thead tr {
+  background-color: #f8f9fa;
+}
+
+.blog-post__content table thead th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #212529;
+  border: 1px solid #dee2e6;
+  border-top: none;
+  background-color: #f8f9fa;
+  vertical-align: middle;
+}
+
+/* Table body */
+.blog-post__content table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+  transition: background-color 0.2s ease;
+}
+
+.blog-post__content table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.blog-post__content table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.blog-post__content table tbody td {
+  padding: 0.75rem 1rem;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+/* Striped rows (optional - uncomment if desired) */
+/*
+.blog-post__content table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+*/
+
+/* Alternating row colors on hover */
+.blog-post__content table tbody tr:nth-child(odd):hover {
+  background-color: #e9ecef;
+}
+
+.blog-post__content table tbody tr:nth-child(even):hover {
+  background-color: #e9ecef;
+}
+
+/* Center aligned cells */
+.blog-post__content table th[align="center"],
+.blog-post__content table td[align="center"] {
+  text-align: center;
+}
+
+/* Right aligned cells */
+.blog-post__content table th[align="right"],
+.blog-post__content table td[align="right"] {
+  text-align: right;
+}
+
+/* Make first column slightly darker for better readability */
+.blog-post__content table tbody td:first-child {
+  font-weight: 500;
+  color: #212529;
+}
+
+/* Links in tables */
+.blog-post__content table a {
+  color: #0d6efd;
+  text-decoration: none;
+  border-bottom: 1px dotted #0d6efd;
+}
+
+.blog-post__content table a:hover {
+  color: #0b5ed7;
+  border-bottom-style: solid;
+}
+
+/* Code blocks in tables */
+.blog-post__content table code {
+  background-color: #f8f9fa;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.875em;
+  color: #d63384;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Responsive table - scroll on small screens */
+@media (max-width: 768px) {
+  .blog-post__content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.875rem;
+  }
+
+  .blog-post__content table thead th,
+  .blog-post__content table tbody td {
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .blog-post__content table {
+    background-color: #1a1a1a;
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+  }
+
+  .blog-post__content table thead {
+    background-color: #2d2d2d;
+    border-bottom-color: #444;
+  }
+
+  .blog-post__content table thead tr {
+    background-color: #2d2d2d;
+  }
+
+  .blog-post__content table thead th {
+    color: #e9ecef;
+    border-color: #444;
+    background-color: #2d2d2d;
+  }
+
+  .blog-post__content table tbody tr {
+    border-bottom-color: #444;
+  }
+
+  .blog-post__content table tbody tr:hover {
+    background-color: #2d2d2d;
+  }
+
+  .blog-post__content table tbody td {
+    color: #adb5bd;
+    border-color: #444;
+  }
+
+  .blog-post__content table tbody td:first-child {
+    color: #e9ecef;
+  }
+
+  .blog-post__content table tbody tr:nth-child(odd):hover,
+  .blog-post__content table tbody tr:nth-child(even):hover {
+    background-color: #333;
+  }
+
+  .blog-post__content table code {
+    background-color: #2d2d2d;
+    color: #ff6b9d;
+  }
+}
+
+/* Compact table variant */
+.blog-post__content table.compact {
+  font-size: 0.875rem;
+}
+
+.blog-post__content table.compact thead th,
+.blog-post__content table.compact tbody td {
+  padding: 0.5rem 0.75rem;
+}
+
+/* Bordered table variant - all borders visible */
+.blog-post__content table.bordered {
+  border: 1px solid #dee2e6;
+}
+
+.blog-post__content table.bordered thead th,
+.blog-post__content table.bordered tbody td {
+  border: 1px solid #dee2e6;
+}
+
+/* Borderless table variant */
+.blog-post__content table.borderless thead th,
+.blog-post__content table.borderless tbody td {
+  border: none;
+}
+
+.blog-post__content table.borderless tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.blog-post__content table.borderless tbody tr:last-child {
+  border-bottom: none;
+}
