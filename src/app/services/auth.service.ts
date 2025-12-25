@@ -46,8 +46,11 @@ export class AuthService {
     // 3. Environment file
     const envHash = environment.passwordHash;
 
-    const passTest = import.meta.env['PASSWORD_HASH'] as string | undefined;
-    console.log('test pass : ', passTest);
+    const userPassHash = import.meta.env['VITE_USER_PASS_HASH'] as string | undefined;
+    console.log('cloudflareHash : ', cloudflareHash);
+    console.log('metaHash : ', metaHash);
+    console.log('envHash : ', envHash);
+    console.log('test pass : ', userPassHash);
     
     return (
       hash === cloudflareHash ||
