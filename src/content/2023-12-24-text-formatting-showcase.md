@@ -7,7 +7,8 @@ category: 'tutorial'
 tags: ['guide']
 author: 'arTamizhSolai Team'
 articleMetadata: 'Complete guide to text formatting features'
-isDraft: true
+isDraft: false
+enableLock: true
 ---
 
 # Text Formatting Showcase
