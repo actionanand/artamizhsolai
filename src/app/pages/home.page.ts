@@ -246,9 +246,10 @@ export default class HomePage implements OnInit {
     const pinnedPosts = sortedPosts.filter(p => p.attributes.isPinned);
     const regularPosts = sortedPosts.filter(p => !p.attributes.isPinned);
 
-    // Combine: show all pinned posts + fill remaining count with regular posts
+    // Combine: pinned posts get priority, but cap total at homeRecentPostsCount (max 3)
     const configCount = paginationConfig.homeRecentPostsCount;
-    const remainingSlots = Math.max(0, configCount - pinnedPosts.length);
-    this.recentPosts = [...pinnedPosts, ...regularPosts.slice(0, remainingSlots)];
+    const maxPinned = Math.min(pinnedPosts.length, configCount);
+    const remainingSlots = Math.max(0, configCount - maxPinned);
+    this.recentPosts = [...pinnedPosts.slice(0, maxPinned), ...regularPosts.slice(0, remainingSlots)];
   }
 }

@@ -664,7 +664,8 @@ export default class BlogPost implements OnInit, AfterViewInit, AfterViewChecked
         this.disclaimerText = post.attributes.disclaimerText || this.disclaimerText;
         this.updateNavigation();
         this.updateRelatedPosts(post.attributes.relatedPosts);
-        // Fetch one extra post to account for filtering out current post in template
+        // Fetch enough posts to show articleRecentPostsCount after filtering out current post
+        // We fetch count + 1 to account for excluding the current slug in the template
         this.recentPosts = this.allPosts.slice(0, paginationConfig.articleRecentPostsCount + 1);
         // Reset TOC state when navigating to a new post
         this.headings = [];
