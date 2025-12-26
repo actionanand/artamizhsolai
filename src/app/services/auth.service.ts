@@ -46,7 +46,7 @@ export class AuthService {
     const metaHash = import.meta.env['VITE_PASSWORD_HASH'] as string | undefined;
     // 3. Additional variable for user password hash
     const userPassHash = import.meta.env['VITE_USER_PASS_HASH'] as string | undefined;
-    // 4. Environment file, commented for cloudflare
+    // 4. Environment file
     const envHash = environment.passwordHash;
    
     // Return the hash that matches, or null if no match
