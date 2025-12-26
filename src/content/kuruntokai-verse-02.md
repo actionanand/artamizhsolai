@@ -108,13 +108,7 @@ The poem captures the romance of first encounter, where the maiden's modesty pre
 
 ## வீடியோ விளக்கம்
 
-<iframe width="100%" height="315" 
-  src="https://www.youtube.com/embed/_Bd_9aan9_4?si=g5tuA1gR55lVBvIV&amp;start=281" 
-  title="YouTube video player" frameborder="0" 
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-  allowfullscreen
-  >
-</iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_Bd_9aan9_4?si=WW_Nvx4obhI5CX18&amp;start=282" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ## மேற்கோள்கள்
 
@@ -125,5 +119,3 @@ The poem captures the romance of first encounter, where the maiden's modesty pre
 5. [பெண்களின் கூந்தல் மணம் இயற்கையானதா? - UPSC EXAM TAMIL](https://www.gunathamizh.com/2010/01/blog-post_24.html)
 6. [நக்கீரர் பரதர்](https://bharathar.blogspot.com/2006/)
 7. [பேராசிரியர் நினைவுகள்: நயமெனப் படுவது யாதெனின் - ஹரி கிருஷ்ணன்](http://www.tamilonline.com/thendral/article.aspx?aid=6481)
-
-
