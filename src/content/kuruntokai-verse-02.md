@@ -11,6 +11,7 @@ verseNumber: "02 (Total 401 Songs, With the invocation song)"
 articleMetadata: 'திணை (Landscape): Kurinji – love in the hill region; Theme: Unspoken love & emotional intimacy'
 coverImage: images/year-2025/smell-in-girls-hair.webp
 toc: false
+scrollToTop: true
 ---
 
 சங்க இலக்கியத்தின் அழகான பாடல்களில் ஒன்றான இந்தப் பாடல், தலைவன் ஒரு வண்டைப் பார்த்து தன் காதலியின் கூந்தலின் மணத்தைப் பற்றிக் கேட்கும் அழகான காட்சியைச் சித்தரிக்கிறது.
