@@ -9,7 +9,7 @@ author: 'Iraiyanar'
 epicName: "Kurunthokai"
 verseNumber: "02 (Total 401 Songs, With the invocation song)"
 articleMetadata: 'திணை (Landscape): Kurinji – love in the hill region; Theme: Unspoken love & emotional intimacy'
-coverImage: images/year-2025/smell-in-girls-hair.jpg
+coverImage: images/year-2025/smell-in-girls-hair.webp
 toc: false
 ---
 
