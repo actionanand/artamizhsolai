@@ -49,18 +49,36 @@ toc: false
 
 ### சொற்களஞ்சியம்
 
-**கொங்கு** - பூவின் மகரந்தம்
-**தேர்** - தேர்ந்தெடுக்கும்
-**வாழ்க்கை** - வாழும்
-**அஞ்சிறைத்தும்பி** - உள்ளே சிறகுகளை உடைய தும்பி(வண்டு) - (**அம் சிறை** - அழகிய சிறகுகள்)
-**காமம் செப்பாது** - நான் விரும்பியதைச் சொல்லாது
-**கண்டது மொழிமோ** - நீ கண்டறிந்ததைக் கூறு
-**பயலியது கெழீய நட்பின்** - பல பிறவிகளிலும் நட்புடன் விளங்கும்(கெழி-நட்பு)
-**மயிலியல்** - மயில் போன்ற
-**செறியியெற் றரிவை** - செறிவான பற்களைக்(எயிறு) கொண்ட பெண்
-**கூந்தலின்** - கூந்தலை விட
-**நறியவும் உளவோ** - மணமிகுந்த ஏதேனும் உள்ளதோ
-**நீ அறியும் பூவே** - நீ அறிந்த பூக்களிடம்
+**கொங்கு** - பூவின் மகரந்தம் <br>
+**தேர்** - தேர்ந்தெடுக்கும் <br>
+**வாழ்க்கை** - வாழும் <br>
+**அஞ்சிறைத்தும்பி** - உள்ளே சிறகுகளை உடைய தும்பி(வண்டு) - (**அம் சிறை** - அழகிய சிறகுகள்) <br>
+**காமம் செப்பாது** - நான் விரும்பியதைச் சொல்லாது <br>
+**கண்டது மொழிமோ** - நீ கண்டறிந்ததைக் கூறு <br>
+**பயலியது கெழீய நட்பின்** - பல பிறவிகளிலும் நட்புடன் விளங்கும்(கெழி-நட்பு) <br>
+**மயிலியல்** - மயில் போன்ற <br>
+**செறியியெற் றரிவை** - செறிவான பற்களைக்(எயிறு) கொண்ட பெண் <br>
+**கூந்தலின்** - கூந்தலை விட <br>
+**நறியவும் உளவோ** - மணமிகுந்த ஏதேனும் உள்ளதோ <br>
+**நீ அறியும் பூவே** - நீ அறிந்த பூக்களிடம் <br>
+
+### English Translation
+
+::verse[Translation]{
+  The man addresses a bee, asking it to tell only the truth rather than words meant to please him. He asks:
+  ::align[center]{::combo[color:#006666]{
+   Among all the flowers you know, <br> 
+   could there be even one with the fragrance<br> 
+   of this maiden's tresses—she who has a deep bond with me,<br> 
+   resembles a peacock, and has close-set, fine teeth?
+  }}
+}
+
+
+The lover addresses the bee because the maiden is too shy to receive his direct compliments. In Sangam literature, the bee often serves as a messenger or intermediary between lovers. Here, the man uses the bee to indirectly praise his beloved's beauty and fragrance—particularly the natural musk-like scent of her hair, which is celebrated in Tamil poetry as a symbol of beauty and femininity.
+
+The poem captures the romance of first encounter, where the maiden's modesty prevents her from responding directly to the man's admiration. The lover's clever use of the bee as a witness to nature's beauty becomes a poetic way to express his overwhelming affection, comparing the maiden's essence to the sweetest fragrances found in nature itself.
+
 
 ### திருவிளையாடற் புராண இணைப்பு
 
@@ -108,14 +126,4 @@ toc: false
 6. [நக்கீரர் பரதர்](https://bharathar.blogspot.com/2006/)
 7. [பேராசிரியர் நினைவுகள்: நயமெனப் படுவது யாதெனின் - ஹரி கிருஷ்ணன்](http://www.tamilonline.com/thendral/article.aspx?aid=6481)
 
-## English Translation
 
-### Translation:
-
-"O bee with five-winged flight, whose life is spent gathering pollen from flowers! Speak truth without flattery—tell me honestly what you know. Among the flowers you have known and visited for your sweet nectar, have you ever found a fragrance as lovely as that which emanates from the hair of this graceful maiden with the beauty of a peacock and the brilliance of her gleaming teeth? Do you know of any flower, O bee, whose fragrance can match hers?"
-
-### Context:
-
-The lover addresses the bee because the maiden is too shy to receive his direct compliments. In Sangam literature, the bee (தும்பி) often serves as a messenger or intermediary between lovers. Here, the man uses the bee to indirectly praise his beloved's beauty and fragrance—particularly the natural musk-like scent of her hair, which is celebrated in Tamil poetry as a symbol of beauty and femininity.
-
-The poem captures the romance of first encounter, where the maiden's modesty prevents her from responding directly to the man's admiration. The lover's clever use of the bee as a witness to nature's beauty becomes a poetic way to express his overwhelming affection, comparing the maiden's essence to the sweetest fragrances found in nature itself.

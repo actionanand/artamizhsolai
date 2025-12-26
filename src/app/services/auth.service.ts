@@ -47,13 +47,14 @@ export class AuthService {
     // 3. Additional variable for user password hash
     const userPassHash = import.meta.env['VITE_USER_PASS_HASH'] as string | undefined;
     // 4. Environment file, commented for cloudflare
-    // const envHash = environment.passwordHash;
+    const envHash = environment.passwordHash;
    
     // Return the hash that matches, or null if no match
     if (hash === cloudflareHash && cloudflareHash) return cloudflareHash;
     if (hash === metaHash && metaHash) return metaHash;
     if (hash === userPassHash && userPassHash) return userPassHash;
-    // if (hash === envHash && envHash) return envHash;
+    // Only validate against envHash if it's not the placeholder value
+    if (hash === envHash && envHash && envHash !== 'PASSWORD_HASH_PLACEHOLDER') return envHash;
     
     return null;
   }
@@ -78,12 +79,16 @@ export class AuthService {
     const cloudflareHash = (globalThis as any).__PASSWORD_HASH__;
     const metaHash = import.meta.env['VITE_PASSWORD_HASH'] as string | undefined;
     const userPassHash = import.meta.env['VITE_USER_PASS_HASH'] as string | undefined;
-    // const envHash = environment.passwordHash;
+    const envHash = environment.passwordHash;
+
+    // Only validate against envHash if it's not the placeholder value
+    const isEnvHashValid = envHash !== 'PASSWORD_HASH_PLACEHOLDER' && cached.hash === envHash;
 
     return (
       cached.hash === cloudflareHash ||
       cached.hash === metaHash ||
-      cached.hash === userPassHash
+      cached.hash === userPassHash ||
+      isEnvHashValid
     );
   }
 
