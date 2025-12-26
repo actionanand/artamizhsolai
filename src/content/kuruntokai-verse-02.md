@@ -34,10 +34,7 @@ toc: false
 ::combo[color:#531A02]{இயற்கைப் புணர்ச்சி புணர்ந்தவழி, தலைமகளை இயற்கைப் புணர்ச்சிக்கண் இடையீடுபட்டு நின்ற தலைமகன், நாணின் நீக்குதற்பொருட்டு, மெய் தொட்டுப் பயிறல் முதலாயின அவள்மாட்டு நிகழ்த்திக}
 
 
-
-### ::combo[color:#25c2a0]{கருத்து:}
-
-இயற்கைப் புணர்ச்சிக்குப் (தலைவியைத் தலைவன் இயல்பாகப் பார்த்துக் காதல் கொள்ளுதல்) பின்னர் தலைவியைச் சந்திக்கும் தலைவன் அவளின் நாணத்தை நீக்குதல் பொருட்டு, மெய்தொட்டுப் பயின்று (தலைவியின் உடல் தொட்டு உரையாடல்) நலம் பாராட்டுதல் ( தலைவியின் அழகு நலத்தைப் பாடுதல்)
+::combo[bg:#25c2a0;color:white;weight:bold]{கருத்து:} இயற்கைப் புணர்ச்சிக்குப் (தலைவியைத் தலைவன் இயல்பாகப் பார்த்துக் காதல் கொள்ளுதல்) பின்னர் தலைவியைச் சந்திக்கும் தலைவன் அவளின் நாணத்தை நீக்குதல் பொருட்டு, மெய்தொட்டுப் பயின்று (தலைவியின் உடல் தொட்டு உரையாடல்) நலம் பாராட்டுதல் ( தலைவியின் அழகு நலத்தைப் பாடுதல்)
 
 தலைவி நாணத்தோடு இருப்பதை உணர்ந்த தலைவன் அவளின் நாணத்தை நீக்க தும்பியைப் பார்த்துப் பேசுகிறான்.
 
@@ -47,12 +44,12 @@ toc: false
 
 பழகுதற்கு இனிய, மயிலைப் போன்ற சாயலையும், செறிந்த பற்களையும் உடைய இவ்வரிவையின் கூந்தலைப் போன்ற மணம் நீ அறிந்த மலர்களுக்கு உண்டா..?
 
-### சொற்களஞ்சியம்
+### ::combo[bg:yellow;color:darkred;weight:bold]{சொற்களஞ்சியம்}
 
 **கொங்கு** - பூவின் மகரந்தம் <br>
 **தேர்** - தேர்ந்தெடுக்கும் <br>
 **வாழ்க்கை** - வாழும் <br>
-**அஞ்சிறைத்தும்பி** - உள்ளே சிறகுகளை உடைய தும்பி(வண்டு) - (**அம் சிறை** - அழகிய சிறகுகள்) <br>
+**அஞ்சிறைத்தும்பி** - உள்ளே சிறகுகளை உடைய தும்பி(வண்டு) -> (**அம் சிறை** - அழகிய சிறகுகள்) <br>
 **காமம் செப்பாது** - நான் விரும்பியதைச் சொல்லாது <br>
 **கண்டது மொழிமோ** - நீ கண்டறிந்ததைக் கூறு <br>
 **பயலியது கெழீய நட்பின்** - பல பிறவிகளிலும் நட்புடன் விளங்கும்(கெழி-நட்பு) <br>
@@ -62,7 +59,7 @@ toc: false
 **நறியவும் உளவோ** - மணமிகுந்த ஏதேனும் உள்ளதோ <br>
 **நீ அறியும் பூவே** - நீ அறிந்த பூக்களிடம் <br>
 
-### English Translation
+### ::combo[bg:yellow;color:darkred;weight:bold]{English Translation}
 
 ::verse[Translation]{
   The man addresses a bee, asking it to tell only the truth rather than words meant to please him. He asks:
@@ -80,11 +77,11 @@ The lover addresses the bee because the maiden is too shy to receive his direct 
 The poem captures the romance of first encounter, where the maiden's modesty prevents her from responding directly to the man's admiration. The lover's clever use of the bee as a witness to nature's beauty becomes a poetic way to express his overwhelming affection, comparing the maiden's essence to the sweetest fragrances found in nature itself.
 
 
-### திருவிளையாடற் புராண இணைப்பு
+### ::combo[bg:yellow;color:darkred;weight:bold]{திருவிளையாடற் புராண இணைப்பு}
 
 திருவிளையாடற் புராணத்திலும் (::combo[color:#25c2a0]{தருமிக்குப் பொற்கிழி அளித்த படலம்}) இந்தப் பாடல் மேற்கோள் காட்டப்படுகிறது. செண்பகப் பாண்டியனுக்கு ஏற்பட்ட ஐயத்தைப் போக்க இறைவன் தருமி மூலம் கொடுத்தனுப்பிய பாடல்.
 
-### நக்கீரர் - சிவபெருமான் வாதம்
+#### ::combo[color:#0066cc]{நக்கீரர் - சிவபெருமான் வாதம்}
 
 பாண்டியன் அவையில் 'கொங்குதேர் வாழ்க்கை' என்னும் செய்யுளின் பொருள் குறித்துச் சங்கப் புலவராக வந்த சிவபெருமானுக்கும், நக்கீரர்க்கும் ஒரு வாதம் நிகழ்ந்தது.
 
@@ -106,11 +103,12 @@ The poem captures the romance of first encounter, where the maiden's modesty pre
 இரந்துண்டு வாழ்வ திலை <br>
 }
 
-## வீடியோ விளக்கம்
+#### ::combo[color:#0066cc]{வீடியோ இணைப்பு}
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_Bd_9aan9_4?si=WW_Nvx4obhI5CX18&amp;start=282" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## மேற்கோள்கள்
+
+### ::combo[bg:yellow;color:darkred;weight:bold]{மேற்கோள்கள்}
 
 1. [குறுந்தொகை - கொங்குதேர் வாழ்க்கை](https://rampsychiatrist.blogspot.com/2011/03/blog-post_10.html)
 2. [தமிழ் இணையக் கல்விக்கழகம் - கொங்குதேர் வாழ்க்கை](https://www.tamilvu.org/ta/library-l1220-html-l12206g5-122848)
